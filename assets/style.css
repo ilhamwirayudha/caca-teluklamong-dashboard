@@ -756,6 +756,11 @@
             width: 100% !important;
         }
 
+        /* Step 1 Card: Symmetrical & Balanced Vertical Padding */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)) {
+            padding: 18px 28px !important;
+        }
+
         /* Step 1 Horizontal Layout: Text & Button Vertically Centered Presisi */
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stHorizontalBlock"] {
             display: flex !important;
@@ -764,7 +769,7 @@
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
-            min-height: 54px !important;
+            min-height: 48px !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"] {
@@ -778,6 +783,7 @@
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:first-child {
             justify-content: center !important;
+            align-items: flex-start !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child {
@@ -789,33 +795,37 @@
             width: fit-content !important;
             max-width: 100% !important;
             display: flex !important;
-            flex-direction: row-reverse !important;
-            align-items: center !important;
-            justify-content: flex-end !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            justify-content: center !important;
             margin: 0 0 0 auto !important;
             padding: 0 !important;
-            gap: 16px !important;
+            gap: 3px !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
             width: auto !important;
             max-width: 100% !important;
             flex: 0 0 auto !important;
-            display: inline-flex !important;
+            display: flex !important;
             align-items: center !important;
+            justify-content: flex-end !important;
             margin: 0 !important;
             padding: 0 !important;
         }
 
         .step1-upload-hint {
-            font-size: 0.82rem !important;
+            font-size: 0.74rem !important;
+            line-height: 1.2 !important;
             color: #94a3b8 !important;
-            white-space: nowrap !important;
+            text-align: right !important;
             margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
+            padding: 0 2px 0 0 !important;
+            letter-spacing: 0.15px !important;
+            white-space: nowrap !important;
             user-select: none !important;
-            display: inline-block !important;
+            display: block !important;
+            width: auto !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) p,
@@ -1160,19 +1170,6 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/%3E%3C/svg%3E") !important;
         }
 
-        .step1-upload-hint {
-            font-size: 0.77rem !important;
-            line-height: 1.1 !important;
-            color: #94a3b8 !important;
-            text-align: right !important;
-            margin: 4px 0 0 0 !important;
-            padding: 0 !important;
-            letter-spacing: 0.15px !important;
-            white-space: nowrap !important;
-            user-select: none !important;
-            display: block !important;
-            width: 100% !important;
-        }
 
         /* Step 2 Parameter Hint Text (Tighter Gap Under Number Inputs) */
         .step2-param-hint {
