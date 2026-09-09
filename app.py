@@ -264,6 +264,7 @@ if run:
         )
 
     try:
+        on_calc_progress(6, "Memulai analisis...", "Inisialisasi pipeline komputasi")
         out_df, events, summary = proses_analisis_lengkap(
             raw,
             col_map,
