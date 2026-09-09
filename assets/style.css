@@ -553,6 +553,10 @@
         }
 
         /* Streamlit Tabs Glass Styling & Total Removal of Red/Gray Underlines */
+        .react-aria-SelectionIndicator,
+        div[class*="SelectionIndicator"],
+        [data-rac="SelectionIndicator"],
+        div:has(> [data-rac="SelectionIndicator"]),
         [data-baseweb="tab-highlight"],
         .stTabs [data-baseweb="tab-highlight"],
         div[data-testid="stTabs"] [data-baseweb="tab-highlight"],
@@ -563,6 +567,8 @@
         .stTabs div[data-testid="stTabHighlight"],
         button[data-testid="stTab"]::after,
         button[data-testid="stTab"]::before,
+        div[data-testid="stTab"]::after,
+        div[data-testid="stTab"]::before,
         [data-baseweb="tab"]::after,
         [data-baseweb="tab"]::before {
             display: none !important;
@@ -576,26 +582,38 @@
             pointer-events: none !important;
         }
 
+        .stTabs div[role="tablist"],
+        [data-testid="stTabs"] div[role="tablist"],
         .stTabs [data-baseweb="tab-list"],
         [data-testid="stTabs"] [data-baseweb="tab-list"] {
             background: rgba(10, 18, 32, 0.75) !important;
             backdrop-filter: blur(16px) !important;
             -webkit-backdrop-filter: blur(16px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
             border-radius: 14px !important;
-            padding: 5px !important;
-            gap: 6px !important;
-            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3) !important;
+            padding: 6px !important;
+            gap: 8px !important;
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.35) !important;
             margin-bottom: 22px !important;
             width: fit-content !important;
             max-width: 100% !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
         }
 
+        .stTabs [role="tab"],
+        [data-testid="stTabs"] [role="tab"],
+        [data-testid="stTab"],
+        div[data-testid="stTab"],
+        button[data-testid="stTab"],
         .stTabs [data-baseweb="tab"],
-        [data-testid="stTabs"] [data-baseweb="tab"],
-        button[data-testid="stTab"] {
+        [data-testid="stTabs"] [data-baseweb="tab"] {
             border-radius: 10px !important;
-            padding: 9px 20px !important;
+            padding: 10px 22px !important;
+            min-height: 42px !important;
+            height: 42px !important;
+            box-sizing: border-box !important;
             font-weight: 600 !important;
             font-size: 0.90rem !important;
             color: #94a3b8 !important;
@@ -605,8 +623,16 @@
             transition: all 0.2s ease !important;
             background: transparent !important;
             cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            white-space: nowrap !important;
         }
 
+        .stTabs [role="tab"]:hover,
+        [data-testid="stTabs"] [role="tab"]:hover,
+        [data-testid="stTab"]:hover,
         .stTabs [data-baseweb="tab"]:hover,
         [data-testid="stTabs"] [data-baseweb="tab"]:hover,
         button[data-testid="stTab"]:hover {
@@ -616,9 +642,13 @@
             border-bottom: none !important;
         }
 
+        .stTabs [role="tab"][aria-selected="true"],
+        [data-testid="stTabs"] [role="tab"][aria-selected="true"],
+        [data-testid="stTab"][aria-selected="true"],
+        div[data-testid="stTab"][aria-selected="true"],
+        button[data-testid="stTab"][aria-selected="true"],
         .stTabs [aria-selected="true"],
         [data-testid="stTabs"] [aria-selected="true"],
-        button[data-testid="stTab"][aria-selected="true"],
         [data-baseweb="tab"][aria-selected="true"] {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
             color: #ffffff !important;
@@ -626,12 +656,25 @@
             border: none !important;
             border-bottom: none !important;
             border-radius: 10px !important;
+            padding: 10px 22px !important;
         }
 
+        .stTabs [role="tab"] p,
+        .stTabs [role="tab"] span,
+        [data-testid="stTab"] p,
+        [data-testid="stTab"] span {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 0.90rem !important;
+            line-height: 1.2 !important;
+        }
+
+        .stTabs [role="tab"][aria-selected="true"] p,
+        .stTabs [role="tab"][aria-selected="true"] span,
+        [data-testid="stTab"][aria-selected="true"] p,
+        [data-testid="stTab"][aria-selected="true"] span,
         .stTabs [aria-selected="true"] p,
-        [data-testid="stTabs"] [aria-selected="true"] p,
-        button[data-testid="stTab"][aria-selected="true"] p,
-        button[data-testid="stTab"][aria-selected="true"] span {
+        [data-testid="stTabs"] [aria-selected="true"] p {
             color: #ffffff !important;
             font-weight: 700 !important;
         }
