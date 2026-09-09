@@ -1193,7 +1193,7 @@
 
 
 
-        /* Number Inputs Styling - Fix Label & Box Collision */
+        /* Number Inputs Styling - Fix Label & Box Collision & Theme Consistency */
         div[data-testid="stNumberInput"] {
             background: transparent !important;
             border: none !important;
@@ -1213,8 +1213,12 @@
             gap: 6px !important;
         }
 
-        div[data-testid="stNumberInput"] div[data-baseweb="input"] {
-            background: rgba(13, 22, 38, 0.75) !important;
+        div[data-testid="stNumberInput"] div[data-baseweb="input"],
+        div[data-testid="stNumberInput"] div[data-baseweb="input"] > div,
+        div[data-testid="stNumberInput"] div[data-baseweb="base-input"],
+        div[data-testid="stNumberInput"] div[data-baseweb="base-input"] > div {
+            background: rgba(13, 22, 38, 0.85) !important;
+            background-color: rgba(13, 22, 38, 0.85) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             border-radius: 10px !important;
             height: 42px !important;
@@ -1223,7 +1227,8 @@
             overflow: hidden !important;
         }
 
-        div[data-testid="stNumberInput"] div[data-baseweb="input"]:focus-within {
+        div[data-testid="stNumberInput"] div[data-baseweb="input"]:focus-within,
+        div[data-testid="stNumberInput"] div[data-baseweb="input"] > div:focus-within {
             border-color: #38bdf8 !important;
             box-shadow: 0 0 0 1px #38bdf8 !important;
         }
@@ -1233,6 +1238,7 @@
             font-weight: 700 !important;
             font-size: 0.95rem !important;
             background: transparent !important;
+            background-color: transparent !important;
             padding: 0 12px !important;
             height: 40px !important;
         }
@@ -1241,11 +1247,13 @@
             color: #38bdf8 !important;
             border: none !important;
             background: transparent !important;
+            background-color: transparent !important;
             padding: 0 8px !important;
         }
 
         div[data-testid="stNumberInput"] button:hover {
             background: rgba(56, 189, 248, 0.15) !important;
+            background-color: rgba(56, 189, 248, 0.15) !important;
             color: #ffffff !important;
         }
 
@@ -1265,8 +1273,11 @@
             padding: 0 !important;
         }
 
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
-            background: rgba(13, 22, 38, 0.75) !important;
+        div[data-testid="stSelectbox"] div[data-baseweb="select"],
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] [role="combobox"] {
+            background: rgba(13, 22, 38, 0.85) !important;
+            background-color: rgba(13, 22, 38, 0.85) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             border-radius: 10px !important;
             color: #ffffff !important;
@@ -1278,6 +1289,28 @@
         div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:focus-within {
             border-color: #38bdf8 !important;
             box-shadow: 0 0 0 1px #38bdf8 !important;
+        }
+
+        /* Selectbox Dropdown Menu & Popover */
+        ul[data-baseweb="menu"],
+        div[data-baseweb="popover"],
+        div[data-baseweb="popover"] > div {
+            background-color: #0d1626 !important;
+            background: #0d1626 !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 10px !important;
+        }
+
+        li[data-baseweb="menu-item"] {
+            color: #f1f5f9 !important;
+            background: transparent !important;
+        }
+
+        li[data-baseweb="menu-item"]:hover,
+        li[data-baseweb="menu-item"][aria-selected="true"] {
+            background: rgba(2, 132, 199, 0.3) !important;
+            color: #38bdf8 !important;
         }
 
         /* Streamlit Expander */
