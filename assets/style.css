@@ -227,10 +227,13 @@
             box-sizing: border-box;
         }
 
-        /* Contained and Centered Content Section Below Full-Bleed Hero (HANYA UNTUK CONTAINER LANGKAH & TABS) */
+        /* Contained and Centered Content Section Below Full-Bleed Hero (HANYA UNTUK CONTAINER LANGKAH, TABS & ALERTS) */
         .glass-card,
         .stTabs,
         [data-testid="stTabs"],
+        div[data-testid="stElementContainer"]:has([data-testid="stAlert"]),
+        div[data-testid="stAlert"],
+        [data-testid="stAlert"],
         :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker):not(:has(.artistic-hero)),
         :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step2-card-marker):not(:has(.artistic-hero)),
         :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step3-card-marker):not(:has(.artistic-hero)) {
@@ -1600,4 +1603,70 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        /* ==========================================================================
+           Streamlit Alerts (Warning, Info, Error): Compact, Proportional & Aligned
+           ========================================================================== */
+        div[data-testid="stElementContainer"]:has([data-testid="stAlert"]),
+        div[data-testid="stAlert"],
+        [data-testid="stAlert"] {
+            width: 100% !important;
+            max-width: 1280px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        [data-testid="stAlert"] {
+            border-radius: 12px !important;
+            padding: 8px 18px !important;
+            min-height: auto !important;
+            margin-top: 4px !important;
+            margin-bottom: 18px !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+        }
+
+        [data-testid="stAlert"] [data-testid="stAlertContainer"] {
+            padding: 0 !important;
+            gap: 12px !important;
+            align-items: center !important;
+        }
+
+        /* Perkecil ukuran teks dan atur proporsi font alert */
+        [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
+        [data-testid="stAlert"] [data-testid="stMarkdownContainer"] span,
+        [data-testid="stAlert"] [data-testid="stAlertContentWarning"],
+        [data-testid="stAlert"] [data-testid="stAlertContentInfo"],
+        [data-testid="stAlert"] [data-testid="stAlertContentError"],
+        [data-testid="stAlert"] [data-testid="stAlertContentSuccess"] {
+            font-size: 0.81rem !important;
+            line-height: 1.45 !important;
+            margin: 0 !important;
+            font-weight: 500 !important;
+            letter-spacing: -0.15px !important;
+        }
+
+        /* Perkecil icon alert agar proporsional dengan font yang ringkas */
+        [data-testid="stAlert"] [data-testid="stAlertIcon"],
+        [data-testid="stAlert"] svg {
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            min-height: 16px !important;
+        }
+
+        /* Nuansa Dark Maritime Amber untuk Warning Box */
+        [data-testid="stAlert"]:has([data-testid="stAlertContentWarning"]),
+        div.stAlert:has([data-testid="stAlertContentWarning"]) {
+            background: rgba(30, 26, 12, 0.85) !important;
+            border: 1px solid rgba(234, 179, 8, 0.32) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(234, 179, 8, 0.12) !important;
+        }
+
+        [data-testid="stAlert"]:has([data-testid="stAlertContentWarning"]) [data-testid="stMarkdownContainer"] p {
+            color: #fef08a !important;
         }
