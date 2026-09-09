@@ -188,17 +188,18 @@ def format_file_size(size_bytes: int) -> str:
     return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
 
 
-def render_hybrid_loading_indicator(
+def get_hybrid_loading_indicator_html(
     filename: str,
     file_size_bytes: int,
     pct: int = 0,
-    status_text: str = "Mempersiapkan pembacaan data...",
+    status_text: str = "Mempersiapkan data...",
     detail_text: str = "",
-):
-    """Merender komponen hybrid loading indicator berbasis progres riil Python."""
+) -> str:
+    """Menghasilkan string HTML untuk komponen hybrid loading indicator."""
     file_size = format_file_size(file_size_bytes)
     pct_clamped = max(0, min(100, int(pct)))
-    stroke_dashoffset = round(138.23 * (1 - pct_clamped / 100.0), 2)
+    # SVG 64x64, r=26 -> C = 2 * pi * 26 = 163.36
+    stroke_dashoffset = round(163.36 * (1 - pct_clamped / 100.0), 2)
 
     is_done = pct_clamped >= 100
     stroke_color = "#10b981" if is_done else "#38bdf8"
@@ -207,11 +208,11 @@ def render_hybrid_loading_indicator(
     bar_color = "linear-gradient(90deg, #10b981, #059669)" if is_done else "linear-gradient(90deg, #38bdf8, #0284c7)"
 
     if not detail_text:
-        formatted_detail = f"Ukuran file: {file_size}"
+        formatted_detail = file_size
     else:
-        formatted_detail = f"Ukuran: {file_size} • {detail_text}"
+        formatted_detail = f"{file_size} • {detail_text}"
 
-    render_template(
+    return load_template(
         "hybrid_loading_indicator.html",
         filename=filename,
         file_size=file_size,
@@ -224,5 +225,27 @@ def render_hybrid_loading_indicator(
         glow_color=glow_color,
         bar_color=bar_color,
     )
+
+
+def render_hybrid_loading_indicator(
+    filename: str,
+    file_size_bytes: int,
+    pct: int = 0,
+    status_text: str = "Mempersiapkan data...",
+    detail_text: str = "",
+    placeholder=None,
+):
+    """Merender komponen hybrid loading indicator berbasis progres riil Python."""
+    html = get_hybrid_loading_indicator_html(
+        filename=filename,
+        file_size_bytes=file_size_bytes,
+        pct=pct,
+        status_text=status_text,
+        detail_text=detail_text,
+    )
+    if placeholder is not None:
+        placeholder.markdown(html, unsafe_allow_html=True)
+    else:
+        st.markdown(html, unsafe_allow_html=True)
 
 

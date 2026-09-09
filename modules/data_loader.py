@@ -109,12 +109,12 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
             ]
 
             rows = []
+            last_pct = base_pct
             for r_idx, row in enumerate(rows_iter):
                 rows.append(row)
                 now = time.time()
-                # Batasi frekuensi callback agar UI tetap 60fps tanpa lag
-                if now - last_update > 0.16:
-                    last_update = now
+                # Batasi frekuensi callback agar stabil, mulus, dan tidak flickering
+                if now - last_update > 0.20:
                     if max_row and max_row > 1:
                         sheet_prog = min(1.0, (r_idx + 1) / (max_row - 1))
                     else:
@@ -123,13 +123,16 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
                     current_pct = int(base_pct + sheet_prog * sheet_weight)
                     current_pct = min(96, max(base_pct, current_pct))
 
-                    if progress_callback:
-                        row_info = f"Baris {r_idx + 1:,}" + (f" dari {max_row:,}" if max_row else "")
-                        progress_callback(
-                            current_pct,
-                            f"Mengekstrak '{sname}' ({r_idx + 1:,} baris)...",
-                            f"Proses data: {row_info}",
-                        )
+                    if current_pct > last_pct:
+                        last_update = now
+                        last_pct = current_pct
+                        if progress_callback:
+                            row_info = f"Baris {r_idx + 1:,}" + (f" / {max_row:,}" if max_row else "")
+                            progress_callback(
+                                current_pct,
+                                f"Mengekstrak '{sname}'...",
+                                row_info,
+                            )
 
             df = pd.DataFrame(rows, columns=clean_headers)
             sheets_dict[sname] = df
@@ -140,8 +143,8 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
             total_all_rows = sum(len(df) for df in sheets_dict.values())
             progress_callback(
                 100,
-                "Data operasional berhasil dimuat!",
-                f"{total_all_rows:,} baris dari {num_sheets} sheet siap dianalisis",
+                "Data siap dianalisis!",
+                f"{total_all_rows:,} baris siap",
             )
         return sheets_dict
 

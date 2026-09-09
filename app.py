@@ -133,14 +133,14 @@ loading_placeholder = st.empty()
 
 if "_cached_sheets" not in st.session_state:
     def on_read_progress(pct: int, status_text: str, detail_text: str = ""):
-        with loading_placeholder.container():
-            render_hybrid_loading_indicator(
-                uploaded.name,
-                len(file_bytes),
-                pct=pct,
-                status_text=status_text,
-                detail_text=detail_text,
-            )
+        render_hybrid_loading_indicator(
+            uploaded.name,
+            len(file_bytes),
+            pct=pct,
+            status_text=status_text,
+            detail_text=detail_text,
+            placeholder=loading_placeholder,
+        )
 
     try:
         sheets = baca_file(file_bytes, uploaded.name, progress_callback=on_read_progress)
