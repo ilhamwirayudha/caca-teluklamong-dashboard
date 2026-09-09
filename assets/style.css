@@ -558,13 +558,20 @@
         div[data-testid="stTabs"] [data-baseweb="tab-highlight"],
         [data-baseweb="tab-border"],
         .stTabs [data-baseweb="tab-border"],
-        div[data-testid="stTabs"] [data-baseweb="tab-border"] {
+        div[data-testid="stTabs"] [data-baseweb="tab-border"],
+        div[data-testid="stTabHighlight"],
+        .stTabs div[data-testid="stTabHighlight"],
+        button[data-testid="stTab"]::after,
+        button[data-testid="stTab"]::before,
+        [data-baseweb="tab"]::after,
+        [data-baseweb="tab"]::before {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
             max-height: 0 !important;
             opacity: 0 !important;
             border: none !important;
+            border-bottom: none !important;
             background: transparent !important;
             pointer-events: none !important;
         }
@@ -594,6 +601,7 @@
             color: #94a3b8 !important;
             border: none !important;
             border-bottom: none !important;
+            outline: none !important;
             transition: all 0.2s ease !important;
             background: transparent !important;
             cursor: pointer !important;
@@ -604,21 +612,26 @@
         button[data-testid="stTab"]:hover {
             color: #ffffff !important;
             background: rgba(255, 255, 255, 0.08) !important;
+            border: none !important;
             border-bottom: none !important;
         }
 
         .stTabs [aria-selected="true"],
         [data-testid="stTabs"] [aria-selected="true"],
-        button[data-testid="stTab"][aria-selected="true"] {
+        button[data-testid="stTab"][aria-selected="true"],
+        [data-baseweb="tab"][aria-selected="true"] {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45) !important;
             border: none !important;
             border-bottom: none !important;
+            border-radius: 10px !important;
         }
 
         .stTabs [aria-selected="true"] p,
-        [data-testid="stTabs"] [aria-selected="true"] p {
+        [data-testid="stTabs"] [aria-selected="true"] p,
+        button[data-testid="stTab"][aria-selected="true"] p,
+        button[data-testid="stTab"][aria-selected="true"] span {
             color: #ffffff !important;
             font-weight: 700 !important;
         }
@@ -939,9 +952,12 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
         }
 
-        /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel */
-        [data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
-        [data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"] {
+        /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel atau tombol plus */
+        div[data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"]:has(ul) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"]:has(li) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"] section:not(:only-child) {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
@@ -952,11 +968,15 @@
         }
 
         /* Container kartu file yang sudah terunggah */
-        [data-testid="stFileUploaderFile"] {
-            background: rgba(14, 25, 45, 0.85) !important;
+        div[data-testid="stFileUploader"] ul,
+        div[data-testid="stFileUploader"] li,
+        [data-testid="stFileUploaderFile"],
+        div.stFileUploaderFile,
+        div[class*="stFileUploaderFile"] {
+            background: rgba(14, 25, 45, 0.92) !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            border: 1px solid rgba(56, 189, 248, 0.4) !important;
             border-radius: 12px !important;
             padding: 6px 14px !important;
             box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
@@ -969,16 +989,28 @@
             box-sizing: border-box !important;
             margin: 0 !important;
             transition: all 0.2s ease !important;
+            color: #ffffff !important;
         }
 
-        [data-testid="stFileUploaderFile"]:hover {
-            border-color: rgba(56, 189, 248, 0.55) !important;
-            box-shadow: 0 6px 20px -2px rgba(2, 132, 199, 0.35) !important;
+        div[data-testid="stFileUploaderFile"]:hover,
+        div.stFileUploaderFile:hover {
+            border-color: rgba(56, 189, 248, 0.65) !important;
+            box-shadow: 0 6px 20px -2px rgba(2, 132, 199, 0.4) !important;
         }
 
         /* Icon file dokumen */
-        [data-testid="stFileUploaderFile"] > div:first-child svg {
+        [data-testid="stFileUploaderFile"] > div:first-child,
+        div.stFileUploaderFile > div:first-child {
+            background: transparent !important;
+            border: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+        }
+
+        [data-testid="stFileUploaderFile"] svg,
+        div.stFileUploaderFile svg {
             fill: #38bdf8 !important;
+            color: #38bdf8 !important;
             width: 20px !important;
             height: 20px !important;
             vertical-align: middle !important;

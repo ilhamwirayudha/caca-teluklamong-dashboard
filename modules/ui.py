@@ -81,9 +81,11 @@ def img_to_base64_src(path: Path | None) -> str:
 
 
 def render_html(content: str):
-    """Merender HTML secara aman dengan membersihkan indentasi CommonMark."""
-    cleaned = "\n".join(line.strip() for line in content.splitlines() if line.strip())
-    st.markdown(cleaned, unsafe_allow_html=True)
+    """Merender HTML secara murni menggunakan st.html tanpa distorsi parser Markdown."""
+    if hasattr(st, "html"):
+        st.html(content)
+    else:
+        st.markdown(content, unsafe_allow_html=True)
 
 
 def load_template(_template_name: str, **context) -> str:
@@ -113,7 +115,10 @@ def inject_css(css_filename: str = "style.css"):
     css_path = ASSETS_DIR / css_filename
     if css_path.exists():
         css_content = css_path.read_text(encoding="utf-8")
-        render_html(f"<style>\n{css_content}\n</style>")
+        if hasattr(st, "html"):
+            st.html(f"<style>\n{css_content}\n</style>")
+        else:
+            st.markdown(f"<style>\n{css_content}\n</style>", unsafe_allow_html=True)
 
 
 def inject_transition_script(js_filename: str = "transition.js"):

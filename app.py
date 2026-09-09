@@ -12,6 +12,13 @@ import plotly.express as px
 import streamlit as st
 import streamlit.components.v1 as components
 
+import sys
+import importlib
+import modules.charts
+import modules.ui
+importlib.reload(modules.charts)
+importlib.reload(modules.ui)
+
 from modules.calculations import (
     AMBANG_COMBO_MENIT_DEFAULT,
     AMBANG_DUAL_MENIT_DEFAULT,
@@ -348,7 +355,8 @@ with st.container(border=True):
                 textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                 marker=dict(line=dict(color="#ffffff", width=2)),
             )
-            apply_glass_theme(fig_pie, margin=dict(t=72, b=25, l=25, r=25))
+            apply_glass_theme(fig_pie)
+            fig_pie.update_layout(margin=dict(t=72, b=25, l=25, r=25))
             st.plotly_chart(fig_pie, width="stretch")
 
         with cc2:
@@ -472,7 +480,8 @@ with st.container(border=True):
                     textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                     marker=dict(line=dict(color="#ffffff", width=2)),
                 )
-                apply_glass_theme(fig_twin_pie, margin=dict(t=72, b=25, l=25, r=25))
+                apply_glass_theme(fig_twin_pie)
+                fig_twin_pie.update_layout(margin=dict(t=72, b=25, l=25, r=25))
                 st.plotly_chart(fig_twin_pie, width="stretch")
             else:
                 st.info("Tidak ada event pada data ini.")
@@ -565,7 +574,8 @@ with st.container(border=True):
                         textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                         marker=dict(line=dict(color="#ffffff", width=2)),
                     )
-                    apply_glass_theme(fig_v1, margin=dict(t=72, b=25, l=25, r=25))
+                    apply_glass_theme(fig_v1)
+                    fig_v1.update_layout(margin=dict(t=72, b=25, l=25, r=25))
                     st.plotly_chart(fig_v1, width="stretch")
 
             with vc2:
@@ -590,7 +600,8 @@ with st.container(border=True):
                         textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                         marker=dict(line=dict(color="#ffffff", width=2)),
                     )
-                    apply_glass_theme(fig_v2, margin=dict(t=72, b=25, l=25, r=25))
+                    apply_glass_theme(fig_v2)
+                    fig_v2.update_layout(margin=dict(t=72, b=25, l=25, r=25))
                     st.plotly_chart(fig_v2, width="stretch")
 
             vcont_df = pd.DataFrame(
