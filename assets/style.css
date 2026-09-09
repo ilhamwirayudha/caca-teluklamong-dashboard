@@ -1525,34 +1525,38 @@
 
         .caca-hybrid-gauge {
             position: relative;
-            width: 64px;
-            height: 64px;
-            min-width: 64px;
-            min-height: 64px;
+            width: 88px;
+            height: 88px;
+            min-width: 88px;
+            min-height: 88px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 2px 0;
+            margin: 4px 0;
         }
 
         .caca-hybrid-circle-track {
             stroke: rgba(56, 189, 248, 0.16);
         }
 
+        .caca-hybrid-card.is-done .caca-hybrid-circle-track {
+            stroke: rgba(16, 185, 129, 0.2);
+        }
+
         .caca-hybrid-circle-arc {
             stroke: #38bdf8;
-            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
             transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;
         }
 
         .caca-hybrid-card.is-done .caca-hybrid-circle-arc {
             stroke: #10b981;
-            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.45));
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
         }
 
         .caca-hybrid-pct {
             position: absolute;
-            font-size: 0.90rem;
+            font-size: 1.22rem;
             font-weight: 800;
             color: #38bdf8;
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1596,25 +1600,4 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
-
-        .caca-hybrid-bar-track {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
-            overflow: hidden;
-            position: relative;
-            margin-top: 2px;
-        }
-
-        .caca-hybrid-bar-rect {
-            fill: #38bdf8;
-            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
-            transition: width 0.2s ease, fill 0.3s ease;
-        }
-
-        .caca-hybrid-card.is-done .caca-hybrid-bar-rect {
-            fill: #10b981;
-            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.45));
         }

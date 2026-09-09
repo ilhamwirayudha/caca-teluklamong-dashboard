@@ -198,11 +198,13 @@ def get_hybrid_loading_indicator_html(
     """Menghasilkan string HTML untuk komponen hybrid loading indicator."""
     file_size = format_file_size(file_size_bytes)
     pct_clamped = max(0, min(100, int(pct)))
-    # SVG 64x64, r=26 -> C = 2 * pi * 26 = 163.36
-    stroke_dashoffset = round(163.36 * (1 - pct_clamped / 100.0), 2)
+    # SVG 88x88, r=36 -> C = 2 * pi * 36 = 226.19
+    stroke_dashoffset = round(226.19 * (1 - pct_clamped / 100.0), 2)
 
     is_done = pct_clamped >= 100
     done_class = "is-done" if is_done else ""
+    stroke_color = "#10b981" if is_done else "#38bdf8"
+    track_color = "rgba(16, 185, 129, 0.2)" if is_done else "rgba(56, 189, 248, 0.16)"
 
     if not detail_text:
         formatted_detail = file_size
@@ -218,6 +220,8 @@ def get_hybrid_loading_indicator_html(
         status_text=status_text,
         detail_text=formatted_detail,
         done_class=done_class,
+        stroke_color=stroke_color,
+        track_color=track_color,
     )
 
 

@@ -6,19 +6,14 @@
 </div>
 </div>
 <div class="caca-hybrid-gauge">
-<svg width="64" height="64" viewBox="0 0 64 64" style="display: block; width: 64px; height: 64px; overflow: visible;">
-<circle class="caca-hybrid-circle-track" cx="32" cy="32" r="26" stroke-width="5" fill="none" />
-<circle id="hybrid-circle-progress" class="caca-hybrid-circle-arc" cx="32" cy="32" r="26" stroke-width="5" stroke-linecap="round" fill="none" stroke-dasharray="163.36" stroke-dashoffset="{{ stroke_dashoffset }}" transform="rotate(-90 32 32)" />
+<svg width="88" height="88" viewBox="0 0 88 88" style="display: block; width: 88px; height: 88px; overflow: visible;">
+<circle class="caca-hybrid-circle-track" cx="44" cy="44" r="36" stroke="{{ track_color }}" stroke-width="6" fill="none" />
+<circle id="hybrid-circle-progress" class="caca-hybrid-circle-arc" cx="44" cy="44" r="36" stroke="{{ stroke_color }}" stroke-width="6" stroke-linecap="round" fill="none" stroke-dasharray="226.19" stroke-dashoffset="{{ stroke_dashoffset }}" transform="rotate(-90 44 44)" />
 </svg>
 <div id="hybrid-pct-text" class="caca-hybrid-pct">{{ pct }}%</div>
 </div>
 <div class="caca-hybrid-info">
 <div class="caca-hybrid-fname" title="{{ filename }}">{{ filename }}</div>
 <div class="caca-hybrid-detail" title="{{ detail_text }}">{{ detail_text }}</div>
-</div>
-<div class="caca-hybrid-bar-track">
-<svg width="100%" height="4" style="display: block; width: 100%; height: 4px;">
-<rect class="caca-hybrid-bar-rect" height="4" width="{{ pct }}%" rx="2" ry="2" />
-</svg>
 </div>
 </div>
