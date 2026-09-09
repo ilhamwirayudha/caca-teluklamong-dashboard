@@ -983,9 +983,26 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
         }
 
+        /* Sembunyikan total tombol plus / tambah file di file uploader (Maksimal 1 file per analisis) */
+        [data-testid="stFileUploader"] button[data-testid="stBaseButton-borderlessIcon"],
+        [data-testid="stFileChips"] button[data-testid="stBaseButton-borderlessIcon"],
+        [data-testid="stFileUploader"] button:has([data-testid="stIconMaterial"]),
+        [data-testid="stFileChips"] button:has([data-testid="stIconMaterial"]) {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+        }
+
         /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel atau tombol plus */
         div[data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
         div[data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"]:has([data-testid="stFileChip"]) [data-testid="stFileUploaderDropzone"],
+        div[data-testid="stFileUploader"]:has([data-testid="stFileChips"]) [data-testid="stFileUploaderDropzone"],
         div[data-testid="stFileUploader"]:has(ul li) [data-testid="stFileUploaderDropzone"] {
             display: none !important;
             visibility: hidden !important;
@@ -994,6 +1011,15 @@
             margin: 0 !important;
             padding: 0 !important;
             pointer-events: none !important;
+        }
+
+        [data-testid="stFileChips"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
         }
 
         div[data-testid="stFileUploader"] ul,
@@ -1009,9 +1035,10 @@
             justify-content: flex-end !important;
         }
 
-        /* Container kartu file yang sudah terunggah */
+        /* Container kartu file yang sudah terunggah (Mendukung Streamlit versi lama & Streamlit 1.63+) */
         [data-testid="stFileUploaderFile"],
-        div.stFileUploaderFile {
+        div.stFileUploaderFile,
+        [data-testid="stFileChip"] {
             background: rgba(14, 25, 45, 0.92) !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
@@ -1041,22 +1068,26 @@
         }
 
         div[data-testid="stFileUploaderFile"]:hover,
-        div.stFileUploaderFile:hover {
+        div.stFileUploaderFile:hover,
+        [data-testid="stFileChip"]:hover {
             border-color: rgba(56, 189, 248, 0.65) !important;
             box-shadow: 0 6px 20px -2px rgba(2, 132, 199, 0.4) !important;
         }
 
         /* Icon file dokumen */
         [data-testid="stFileUploaderFile"] > div:first-child,
-        div.stFileUploaderFile > div:first-child {
+        div.stFileUploaderFile > div:first-child,
+        [data-testid="stFileChip"] > div:first-child {
             background: transparent !important;
             border: none !important;
             display: inline-flex !important;
             align-items: center !important;
+            justify-content: center !important;
         }
 
         [data-testid="stFileUploaderFile"] svg,
-        div.stFileUploaderFile svg {
+        div.stFileUploaderFile svg,
+        [data-testid="stFileChip"] svg {
             fill: #38bdf8 !important;
             color: #38bdf8 !important;
             width: 20px !important;
@@ -1075,7 +1106,8 @@
             padding: 0 !important;
         }
 
-        [data-testid="stFileUploaderFileName"] {
+        [data-testid="stFileUploaderFileName"],
+        [data-testid="stFileChipName"] {
             color: #f1f5f9 !important;
             font-size: 0.88rem !important;
             font-weight: 600 !important;
@@ -1086,7 +1118,9 @@
             margin: 0 !important;
         }
 
-        [data-testid="stFileUploaderFileData"] small {
+        [data-testid="stFileUploaderFileData"] small,
+        [data-testid="stFileChip"] small,
+        [data-testid="stFileChip"] div:has(> [data-testid="stFileChipName"]) + div {
             color: #94a3b8 !important;
             font-size: 0.74rem !important;
             font-weight: 500 !important;
@@ -1094,7 +1128,8 @@
         }
 
         /* Tombol hapus file (Icon tempat sampah / trash bin merah elegan) */
-        [data-testid="stFileUploaderDeleteBtn"] {
+        [data-testid="stFileUploaderDeleteBtn"],
+        [data-testid="stFileChipDeleteBtn"] {
             display: flex !important;
             align-items: center !important;
             margin: 0 0 0 6px !important;

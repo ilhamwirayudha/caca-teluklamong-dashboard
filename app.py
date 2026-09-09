@@ -103,6 +103,7 @@ with st.container(border=True):
         uploaded = st.file_uploader(
             "Pilih file data aktivitas kontainer",
             type=["xlsx", "xls", "csv"],
+            accept_multiple_files=False,
             label_visibility="collapsed",
             key="file_uploader_widget",
         )
