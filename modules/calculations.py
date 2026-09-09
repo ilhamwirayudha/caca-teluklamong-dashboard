@@ -406,22 +406,56 @@ def guess(options, keywords, default_idx=0):
     return default_idx
 
 
-def proses_analisis_lengkap(raw, col_map, size_eligible, ambang_combo, ambang_dual, ambang_twinlift):
+def proses_analisis_lengkap(
+    raw,
+    col_map,
+    size_eligible,
+    ambang_combo,
+    ambang_dual,
+    ambang_twinlift,
+    progress_callback=None,
+):
     """
     Fungsi orkestrasi pipeline kalkulasi lengkap dari raw DataFrame sampai summary.
     Mengembalikan (out_df, events, summary).
     """
+    if progress_callback:
+        progress_callback(12, "Menyiapkan & memvalidasi data...", "Standardisasi kolom data")
+
     df = siapkan_data(raw, col_map, size_eligible)
     if len(df) == 0:
         return None, None, None
 
+    if progress_callback:
+        progress_callback(32, "Menganalisis siklus truk (Combo)...", f"{len(df):,} baris kontainer")
+
     df_combo = layer1_combo(df, ambang_combo, size_eligible)
+
+    if progress_callback:
+        progress_callback(52, "Mendeteksi Twin Lift kontainer...", "Evaluasi pasangan lifting")
+
     twinlift_status_map, twinlift_gap_map = deteksi_twinlift(df_combo, ambang_twinlift, size_eligible)
+
+    if progress_callback:
+        progress_callback(68, "Merekronstruksi event aktivitas...", "Pemetaan pergerakan kontainer")
+
     events = bentuk_event(df_combo)
     events["TWINLIFT_STATUS"] = events["GROUP_ID"].map(twinlift_status_map)
     events["TWINLIFT_GAP_MENIT"] = events["GROUP_ID"].map(twinlift_gap_map)
+
+    if progress_callback:
+        progress_callback(80, "Menghitung rasio Dual Cycle...", f"{len(events):,} event terdeteksi")
+
     events = layer2_dual(events, ambang_dual)
     events, event_id_map = beri_event_id(events, df_combo)
+
+    if progress_callback:
+        progress_callback(92, "Menyusun ringkasan metrik KPI...", "Agregasi produktivitas kapal")
+
     out_df = gabungkan_hasil(df_combo, events, event_id_map)
     summary = hitung_ringkasan(events, out_df)
+
+    if progress_callback:
+        progress_callback(100, "Analisis komputasi selesai!", "Menyiapkan dashboard visualisasi...")
+
     return out_df, events, summary

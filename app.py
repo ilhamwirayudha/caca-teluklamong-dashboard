@@ -251,20 +251,40 @@ if not run and "hasil" not in st.session_state:
 
 # Eksekusi Komputasi Analisis
 if run:
-    try:
-        with st.spinner("Sedang memproses data dan menghitung siklus..."):
-            out_df, events, summary = proses_analisis_lengkap(
-                raw, col_map, SIZE_ELIGIBLE, ambang_combo, ambang_dual, ambang_twinlift
-            )
-            gc.collect()
+    loading_calc_placeholder = st.empty()
 
-            if out_df is None or len(out_df) == 0:
-                st.error(
-                    "Setelah pembersihan, tidak ada baris data yang tersisa. "
-                    "Kemungkinan kolom waktu DISC_LOAD_TS & STACK_UNSTACK_TS tidak valid."
-                )
-                st.stop()
+    def on_calc_progress(pct: int, status_text: str, detail_text: str = ""):
+        render_hybrid_loading_indicator(
+            uploaded.name,
+            len(file_bytes),
+            pct=pct,
+            status_text=status_text,
+            detail_text=detail_text,
+            placeholder=loading_calc_placeholder,
+        )
+
+    try:
+        out_df, events, summary = proses_analisis_lengkap(
+            raw,
+            col_map,
+            SIZE_ELIGIBLE,
+            ambang_combo,
+            ambang_dual,
+            ambang_twinlift,
+            progress_callback=on_calc_progress,
+        )
+        time.sleep(0.45)
+        loading_calc_placeholder.empty()
+        gc.collect()
+
+        if out_df is None or len(out_df) == 0:
+            st.error(
+                "Setelah pembersihan, tidak ada baris data yang tersisa. "
+                "Kemungkinan kolom waktu DISC_LOAD_TS & STACK_UNSTACK_TS tidak valid."
+            )
+            st.stop()
     except Exception as e:
+        loading_calc_placeholder.empty()
         st.error("Terjadi error saat memproses data.")
         with st.expander("Detail error (untuk dilaporkan)", expanded=True):
             st.exception(e)
