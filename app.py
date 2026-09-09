@@ -13,12 +13,9 @@ import plotly.express as px
 import streamlit as st
 import streamlit.components.v1 as components
 
-import sys
-import importlib
+import gc
 import modules.charts
 import modules.ui
-importlib.reload(modules.charts)
-importlib.reload(modules.ui)
 
 from modules.calculations import (
     AMBANG_COMBO_MENIT_DEFAULT,
@@ -251,6 +248,7 @@ if run:
             out_df, events, summary = proses_analisis_lengkap(
                 raw, col_map, SIZE_ELIGIBLE, ambang_combo, ambang_dual, ambang_twinlift
             )
+            gc.collect()
 
             if out_df is None or len(out_df) == 0:
                 st.error(
@@ -656,13 +654,13 @@ with st.container(border=True):
         if st.session_state.get("_download_sig") != hasil_sig:
             st.session_state.pop("_csv_bytes", None)
             st.session_state.pop("_excel_bytes", None)
+            st.session_state.pop("_excel_sig", None)
             st.session_state["_download_sig"] = hasil_sig
 
         if "_csv_bytes" not in st.session_state:
             st.session_state["_csv_bytes"] = out_df.to_csv(index=False).encode("utf-8-sig")
-        if "_excel_bytes" not in st.session_state:
-            with st.spinner("Menyiapkan file Excel (data saja, ringan & cepat)..."):
-                st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
+
+        excel_ready = "_excel_bytes" in st.session_state and st.session_state.get("_excel_sig") == hasil_sig
 
         dcol1, dcol2 = st.columns(2)
         with dcol1:
@@ -674,10 +672,29 @@ with st.container(border=True):
                 use_container_width=True,
             )
         with dcol2:
-            st.download_button(
-                "Download Excel (Dataset Lengkap)",
-                data=st.session_state["_excel_bytes"],
-                file_name="Hasil_Analisis_Dual_Cycle.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True,
+            if excel_ready:
+                st.download_button(
+                    "Download Excel (Dataset Lengkap)",
+                    data=st.session_state["_excel_bytes"],
+                    file_name="Hasil_Analisis_Dual_Cycle.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True,
+                )
+            else:
+                if st.button("Siapkan File Excel (.xlsx)", use_container_width=True):
+                    with st.spinner("Menyiapkan file Excel (data saja, mohon tunggu)..."):
+                        try:
+                            st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
+                            st.session_state["_excel_sig"] = hasil_sig
+                            st.rerun()
+                        except Exception as err:
+                            st.error(
+                                f"Gagal membuat file Excel: {err}. "
+                                "Karena dataset berukuran besar, disarankan mengunduh format CSV di samping."
+                            )
+
+        if len(out_df) > 30_000:
+            st.caption(
+                "💡 **Tips:** Untuk file dengan puluhan ribu baris, format **CSV** sangat disarankan "
+                "karena proses unduh instan dan dapat langsung dibuka di Microsoft Excel atau diimpor ke aplikasi BI."
             )
