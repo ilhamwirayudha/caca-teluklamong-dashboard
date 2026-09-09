@@ -1,37 +1,41 @@
 <div id="caca-hybrid-loader"
-    style="max-width: 480px; margin: 16px auto 20px auto; background: rgba(13, 22, 38, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 16px; padding: 18px 22px; box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.55), 0 0 24px rgba(2, 132, 199, 0.2); animation: fadeInUp 0.35s ease-out; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;">
+    style="max-width: 520px; margin: 16px auto 22px auto; background: rgba(13, 22, 38, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 16px; padding: 18px 22px; box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.55), 0 0 24px rgba(2, 132, 199, 0.2); animation: fadeInUp 0.25s ease-out; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;">
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
         <!-- Left: Circular Progress Ring (Hybrid Indicator Part 1) -->
-        <div
-            style="position: relative; width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-            <svg width="56" height="56" viewBox="0 0 56 56" style="display: block; overflow: visible;">
+        <div style="position: relative; width: 56px; height: 56px; min-width: 56px; min-height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="56" height="56" viewBox="0 0 56 56" style="display: block; width: 56px; height: 56px; overflow: visible;">
                 <!-- Background Track -->
-                <circle cx="28" cy="28" r="22" stroke="rgba(56, 189, 248, 0.2)" stroke-width="5" fill="none" />
-                <!-- Active Progress Arc -->
-                <circle id="hybrid-circle-progress" cx="28" cy="28" r="22" stroke="#38bdf8" stroke-width="5"
-                    stroke-linecap="round" fill="none" stroke-dasharray="138.23" stroke-dashoffset="70.5"
+                <circle cx="28" cy="28" r="22" stroke="rgba(56, 189, 248, 0.18)" stroke-width="5" fill="none" />
+                <!-- Active Progress Arc (Rotates around 28, 28) -->
+                <circle id="hybrid-circle-progress" cx="28" cy="28" r="22"
+                    stroke="{{ stroke_color }}"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    fill="none"
+                    stroke-dasharray="138.23"
+                    stroke-dashoffset="{{ stroke_dashoffset }}"
                     transform="rotate(-90 28 28)"
-                    style="transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));" />
+                    style="transition: stroke-dashoffset 0.25s ease, stroke 0.3s ease; filter: drop-shadow(0 0 6px {{ glow_color }});" />
             </svg>
             <!-- Percentage Text Inside Circle -->
             <div id="hybrid-pct-text"
-                style="position: absolute; font-size: 0.85rem; font-weight: 800; color: #38bdf8; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.3px; text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">
-                49%
+                style="position: absolute; font-size: 0.82rem; font-weight: 800; color: {{ text_color }}; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.3px; text-shadow: 0 0 8px {{ glow_color }};">
+                {{ pct }}%
             </div>
         </div>
 
         <!-- Center: Status & File Information -->
         <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
             <div id="hybrid-status-text"
-                style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.1px; line-height: 1.25;">
-                Membaca &amp; Memproses Data...
+                style="font-size: 0.82rem; font-weight: 700; color: {{ text_color }}; letter-spacing: 0.1px; line-height: 1.25; transition: color 0.3s ease;">
+                {{ status_text }}
             </div>
-            <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; letter-spacing: -0.3px; line-height: 1.3; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+            <div style="font-size: 1.02rem; font-weight: 800; color: #ffffff; letter-spacing: -0.3px; line-height: 1.3; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                 title="{{ filename }}">
                 {{ filename }}
             </div>
-            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 2px; line-height: 1.2;">
-                Ukuran: <span style="color: #e2e8f0; font-weight: 600;">{{ file_size }}</span>
+            <div style="font-size: 0.77rem; color: #94a3b8; margin-top: 2px; line-height: 1.2;">
+                {{ detail_text }}
             </div>
         </div>
 
@@ -52,20 +56,14 @@
     <div
         style="width: 100%; height: 5px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; margin-top: 14px; position: relative;">
         <div id="hybrid-bar-fill"
-            style="width: 49%; height: 100%; background: linear-gradient(90deg, #38bdf8, #0284c7); border-radius: 999px; transition: width 0.2s ease, background 0.3s ease; box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);">
+            style="width: {{ pct }}%; height: 100%; background: {{ bar_color }}; border-radius: 999px; transition: width 0.25s ease, background 0.3s ease; box-shadow: 0 0 10px {{ glow_color }};">
         </div>
     </div>
 </div>
 
 <script>
     (function () {
-        var pct = 15;
-        var circle = document.getElementById('hybrid-circle-progress');
-        var pctText = document.getElementById('hybrid-pct-text');
-        var bar = document.getElementById('hybrid-bar-fill');
-        var statusText = document.getElementById('hybrid-status-text');
         var closeBtn = document.getElementById('hybrid-close-btn');
-
         if (closeBtn) {
             closeBtn.addEventListener('click', function () {
                 var card = document.getElementById('caca-hybrid-loader');
@@ -77,34 +75,5 @@
                 }
             });
         }
-
-        if (!circle || !pctText || !bar) return;
-
-        var circumference = 138.23; // 2 * pi * 22
-        circle.style.strokeDasharray = circumference;
-        circle.style.strokeDashoffset = circumference * (1 - pct / 100);
-        bar.style.width = pct + '%';
-        pctText.textContent = Math.round(pct) + '%';
-
-        var interval = setInterval(function () {
-            if (pct < 95) {
-                var step = Math.max(0.35, (95 - pct) * 0.075);
-                pct = Math.min(95, pct + step);
-                var rounded = Math.round(pct);
-                pctText.textContent = rounded + '%';
-                circle.style.strokeDashoffset = circumference * (1 - pct / 100);
-                bar.style.width = pct + '%';
-
-                if (statusText) {
-                    if (pct < 35) {
-                        statusText.textContent = 'Membaca struktur file...';
-                    } else if (pct < 70) {
-                        statusText.textContent = 'Mengekstrak data sheet operasional...';
-                    } else {
-                        statusText.textContent = 'Memvalidasi data & konfigurasi...';
-                    }
-                }
-            }
-        }, 110);
     })();
 </script>

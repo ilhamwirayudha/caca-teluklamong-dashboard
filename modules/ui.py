@@ -188,12 +188,41 @@ def format_file_size(size_bytes: int) -> str:
     return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
 
 
-def render_hybrid_loading_indicator(filename: str, file_size_bytes: int):
-    """Merender komponen hybrid loading indicator (lingkaran progress + status + linear bar)."""
+def render_hybrid_loading_indicator(
+    filename: str,
+    file_size_bytes: int,
+    pct: int = 0,
+    status_text: str = "Mempersiapkan pembacaan data...",
+    detail_text: str = "",
+):
+    """Merender komponen hybrid loading indicator berbasis progres riil Python."""
     file_size = format_file_size(file_size_bytes)
+    pct_clamped = max(0, min(100, int(pct)))
+    stroke_dashoffset = round(138.23 * (1 - pct_clamped / 100.0), 2)
+
+    is_done = pct_clamped >= 100
+    stroke_color = "#10b981" if is_done else "#38bdf8"
+    text_color = "#10b981" if is_done else "#38bdf8"
+    glow_color = "rgba(16, 185, 129, 0.45)" if is_done else "rgba(56, 189, 248, 0.45)"
+    bar_color = "linear-gradient(90deg, #10b981, #059669)" if is_done else "linear-gradient(90deg, #38bdf8, #0284c7)"
+
+    if not detail_text:
+        formatted_detail = f"Ukuran file: {file_size}"
+    else:
+        formatted_detail = f"Ukuran: {file_size} • {detail_text}"
+
     render_template(
         "hybrid_loading_indicator.html",
         filename=filename,
         file_size=file_size,
+        pct=pct_clamped,
+        stroke_dashoffset=stroke_dashoffset,
+        status_text=status_text,
+        detail_text=formatted_detail,
+        stroke_color=stroke_color,
+        text_color=text_color,
+        glow_color=glow_color,
+        bar_color=bar_color,
     )
+
 

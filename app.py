@@ -132,12 +132,20 @@ if st.session_state.get("_last_file_sig") != file_sig:
 loading_placeholder = st.empty()
 
 if "_cached_sheets" not in st.session_state:
-    with loading_placeholder.container():
-        render_hybrid_loading_indicator(uploaded.name, len(file_bytes))
+    def on_read_progress(pct: int, status_text: str, detail_text: str = ""):
+        with loading_placeholder.container():
+            render_hybrid_loading_indicator(
+                uploaded.name,
+                len(file_bytes),
+                pct=pct,
+                status_text=status_text,
+                detail_text=detail_text,
+            )
+
     try:
-        sheets = baca_file(file_bytes, uploaded.name)
+        sheets = baca_file(file_bytes, uploaded.name, progress_callback=on_read_progress)
         st.session_state["_cached_sheets"] = sheets
-        time.sleep(0.35)
+        time.sleep(0.45)
         loading_placeholder.empty()
     except Exception as e:
         loading_placeholder.empty()
