@@ -955,9 +955,7 @@
         /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel atau tombol plus */
         div[data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
         div[data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"],
-        div[data-testid="stFileUploader"]:has(ul) [data-testid="stFileUploaderDropzone"],
-        div[data-testid="stFileUploader"]:has(li) [data-testid="stFileUploaderDropzone"],
-        div[data-testid="stFileUploader"] section:not(:only-child) {
+        div[data-testid="stFileUploader"]:has(ul li) [data-testid="stFileUploaderDropzone"] {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
