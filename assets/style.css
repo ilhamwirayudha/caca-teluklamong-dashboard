@@ -983,11 +983,9 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
         }
 
-        /* Sembunyikan total tombol plus / tambah file di file uploader (Maksimal 1 file per analisis) */
+        /* Sembunyikan HANYA tombol tambah file (+) pada Streamlit 1.63 (Maksimal 1 file per analisis) */
         [data-testid="stFileUploader"] button[data-testid="stBaseButton-borderlessIcon"],
-        [data-testid="stFileChips"] button[data-testid="stBaseButton-borderlessIcon"],
-        [data-testid="stFileUploader"] button:has([data-testid="stIconMaterial"]),
-        [data-testid="stFileChips"] button:has([data-testid="stIconMaterial"]) {
+        [data-testid="stFileChips"] button[data-testid="stBaseButton-borderlessIcon"] {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
@@ -1011,10 +1009,9 @@
             pointer-events: none !important;
         }
 
-        /* Pada Streamlit 1.63+: file chips berada di dalam dropzone. Sembunyikan tombol Upload File saat file sudah ada */
-        [data-testid="stFileUploaderDropzone"]:has([data-testid="stFileChips"]) button[data-testid="stBaseButton-secondary"],
+        /* Pada Streamlit 1.63+: sembunyikan tombol Upload File utama HANYA saat file chip sudah ada */
+        [data-testid="stFileUploaderDropzone"]:has([data-testid="stFileChip"]) > span button[data-testid="stBaseButton-secondary"],
         [data-testid="stFileUploaderDropzone"]:has([data-testid="stFileChip"]) button[data-testid="stBaseButton-secondary"],
-        div[data-testid="stFileUploader"]:has([data-testid="stFileChips"]) button[data-testid="stBaseButton-secondary"],
         div[data-testid="stFileUploader"]:has([data-testid="stFileChip"]) button[data-testid="stBaseButton-secondary"] {
             display: none !important;
             visibility: hidden !important;
