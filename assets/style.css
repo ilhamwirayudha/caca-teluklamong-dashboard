@@ -758,7 +758,7 @@
 
         /* Step 1 Card: Symmetrical & Balanced Vertical Padding (Generous breathing room) */
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)) {
-            padding: 24px 32px !important;
+            padding: 34px 44px !important;
             box-sizing: border-box !important;
         }
 
