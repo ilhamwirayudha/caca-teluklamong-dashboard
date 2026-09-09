@@ -1,5 +1,5 @@
 """
-CACA - Cycle Analysis & Cargo Optimization Dashboard
+CACA - Cycle Analyst & Cargo Accelaration Dashboard
 Pelindo Terminal Teluk Lamong
 
 Aplikasi analitis berbasis web untuk rekonstruksi siklus truk dermaga,
