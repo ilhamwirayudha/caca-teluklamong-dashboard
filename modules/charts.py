@@ -5,11 +5,20 @@ Terminal Teluk Lamong - Pelindo
 Menyediakan utilitas styling transparansi glassmorphism maritim untuk Plotly Charts.
 """
 
-def apply_glass_theme(fig, title: str = None):
+def apply_glass_theme(fig, title: str = None, margin: dict = None):
     """
     Menerapkan layout tema transparent glassmorphism maritim pada objek Plotly Figure
     dengan tipografi Plus Jakarta Sans dan warna kontras tinggi.
     """
+    default_margin = dict(t=56, b=30, l=40, r=20)
+    if fig.layout.margin:
+        for k in ['t', 'b', 'l', 'r']:
+            val = getattr(fig.layout.margin, k, None)
+            if val is not None:
+                default_margin[k] = val
+    if margin:
+        default_margin.update(margin)
+
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -17,8 +26,12 @@ def apply_glass_theme(fig, title: str = None):
         title=dict(
             text=title or (fig.layout.title.text if fig.layout.title else ""),
             font=dict(size=14, color="#ffffff", family="Plus Jakarta Sans, sans-serif"),
+            y=0.98,
+            x=0.01,
+            xanchor="left",
+            yanchor="top",
         ),
-        margin=dict(t=48, b=30, l=40, r=20),
+        margin=default_margin,
         legend=dict(
             bgcolor="rgba(13, 22, 38, 0.85)",
             bordercolor="rgba(255, 255, 255, 0.12)",

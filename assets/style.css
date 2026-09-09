@@ -29,6 +29,18 @@
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
+        /* Protect Streamlit Material Symbols Icon Fonts */
+        [class*="material-symbols"],
+        .material-symbols-rounded,
+        .material-symbols-outlined,
+        span[data-testid="stIconMaterial"],
+        [data-testid*="Icon"] {
+            font-family: 'Material Symbols Rounded', 'Material Symbols Outlined' !important;
+            font-style: normal !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+        }
+
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -219,7 +231,7 @@
         .glass-card,
         .stTabs,
         [data-testid="stTabs"],
-        [data-testid="stHorizontalBlock"]:has(#step1-card-marker),
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)),
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)),
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) {
             width: 100% !important;
@@ -540,43 +552,75 @@
             box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
         }
 
-        /* Streamlit Tabs Glass Styling */
-        .stTabs [data-baseweb="tab-list"] {
-            background: rgba(13, 22, 38, 0.72) !important;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 14px;
-            padding: 6px;
-            gap: 6px;
-            box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.35);
-            margin-bottom: 20px;
+        /* Streamlit Tabs Glass Styling & Total Removal of Red/Gray Underlines */
+        [data-baseweb="tab-highlight"],
+        .stTabs [data-baseweb="tab-highlight"],
+        div[data-testid="stTabs"] [data-baseweb="tab-highlight"],
+        [data-baseweb="tab-border"],
+        .stTabs [data-baseweb="tab-border"],
+        div[data-testid="stTabs"] [data-baseweb="tab-border"] {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            max-height: 0 !important;
+            opacity: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            pointer-events: none !important;
         }
 
-        .stTabs [data-baseweb="tab"] {
-            border-radius: 10px;
-            padding: 10px 18px;
-            font-weight: 600;
-            font-size: 0.92rem;
+        .stTabs [data-baseweb="tab-list"],
+        [data-testid="stTabs"] [data-baseweb="tab-list"] {
+            background: rgba(10, 18, 32, 0.75) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 14px !important;
+            padding: 5px !important;
+            gap: 6px !important;
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3) !important;
+            margin-bottom: 22px !important;
+            width: fit-content !important;
+            max-width: 100% !important;
+        }
+
+        .stTabs [data-baseweb="tab"],
+        [data-testid="stTabs"] [data-baseweb="tab"],
+        button[data-testid="stTab"] {
+            border-radius: 10px !important;
+            padding: 9px 20px !important;
+            font-weight: 600 !important;
+            font-size: 0.90rem !important;
             color: #94a3b8 !important;
             border: none !important;
-            transition: all 0.2s ease;
+            border-bottom: none !important;
+            transition: all 0.2s ease !important;
             background: transparent !important;
+            cursor: pointer !important;
         }
 
-        .stTabs [data-baseweb="tab"]:hover {
+        .stTabs [data-baseweb="tab"]:hover,
+        [data-testid="stTabs"] [data-baseweb="tab"]:hover,
+        button[data-testid="stTab"]:hover {
             color: #ffffff !important;
             background: rgba(255, 255, 255, 0.08) !important;
+            border-bottom: none !important;
         }
 
-        .stTabs [aria-selected="true"] {
+        .stTabs [aria-selected="true"],
+        [data-testid="stTabs"] [aria-selected="true"],
+        button[data-testid="stTab"][aria-selected="true"] {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
             color: #ffffff !important;
-            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4) !important;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45) !important;
+            border: none !important;
+            border-bottom: none !important;
         }
 
-        .stTabs [data-baseweb="tab-highlight"] {
-            display: none !important;
+        .stTabs [aria-selected="true"] p,
+        [data-testid="stTabs"] [aria-selected="true"] p {
+            color: #ffffff !important;
+            font-weight: 700 !important;
         }
 
         /* Buttons Styling */
@@ -627,33 +671,10 @@
             font-family: 'Plus Jakarta Sans', sans-serif !important;
         }
 
-        /* Unified Step Containers: Identical width, border, padding, and backdrop */
-        div[data-testid="stElementContainer"]:has(#step1-card-marker) {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) {
-            background: rgba(13, 22, 38, 0.75) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-            border-radius: 18px !important;
-            padding: 16px 26px !important;
-            margin-bottom: 24px !important;
-            align-items: center !important;
-            box-sizing: border-box !important;
-            min-height: 72px !important;
-            width: 100% !important;
-            max-width: 1280px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            animation: fadeInUp 0.4s ease-out;
-        }
-
-        /* Step 2 & Step 3 Unified Container Cards (Strictly Exclude Root and Hero Container) */
+        /* ================================================================
+           CONTAINER LANGKAH 1, 2, & 3: JARAK KONSISTEN & VERTICAL CENTERING
+           ================================================================ */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)),
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)),
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) {
             background: rgba(13, 22, 38, 0.75) !important;
@@ -662,7 +683,8 @@
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
             border-radius: 18px !important;
-            padding: 22px 26px !important;
+            padding: 22px 28px !important;
+            margin-top: 0 !important;
             margin-bottom: 24px !important;
             box-sizing: border-box !important;
             width: 100% !important;
@@ -688,22 +710,88 @@
             overflow: hidden !important;
         }
 
+        /* Vertical Block layout inside containers */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"] {
             padding: 0 !important;
+            margin: 0 !important;
             gap: 18px !important;
             width: 100% !important;
         }
 
-        /* Hilangkan margin bawaan markdown dan label yang mengganggu vertikal */
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) p,
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) [data-testid="stMarkdownContainer"] {
+        /* Zero out element container for hidden step1 marker */
+        div[data-testid="stElementContainer"]:has(#step1-card-marker) {
+            position: absolute !important;
+            width: 0 !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Reset inner column wrappers so only the main outer step container gets card border & background */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"] div[data-testid="stVerticalBlockBorderWrapper"] {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Step 1 Horizontal Layout: Text & Button Vertically Centered Presisi */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stHorizontalBlock"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 54px !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"] {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-self: center !important;
             margin: 0 !important;
             padding: 0 !important;
         }
 
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) [data-testid="stWidgetLabel"],
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) label {
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:first-child {
+            justify-content: center !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child {
+            align-items: flex-end !important;
+            justify-content: center !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"] {
+            width: fit-content !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            justify-content: center !important;
+            margin: 0 0 0 auto !important;
+            padding: 0 !important;
+            gap: 4px !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) p,
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) [data-testid="stMarkdownContainer"] {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) [data-testid="stWidgetLabel"],
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) label {
             display: none !important;
             height: 0 !important;
             margin: 0 !important;
@@ -711,9 +799,9 @@
         }
 
         /* ================================================================
-           TOMBOL UPLOAD FILE SAJA (HAPUS TOTAL SEMUA OPSI / TEKS DRAG & DROP)
+           TOMBOL UPLOAD FILE & FILE CARD
            ================================================================ */
-        /* Sembunyikan semua teks 'Drag and drop file here', batasan ukuran file, dan icon awan */
+        /* Sembunyikan semua teks instruksi drag and drop & batasan bawaan */
         [data-testid="stFileUploaderDropzoneInstructions"],
         [data-testid="stFileUploaderDropzoneInstructions"] * {
             display: none !important;
@@ -751,10 +839,9 @@
             box-shadow: none !important;
         }
 
-        /* Rata tengah dalam wrapper agar tombol dan teks di bawahnya sejajar presisi */
         [data-testid="stFileUploader"] {
             display: flex !important;
-            justify-content: center !important;
+            justify-content: flex-end !important;
             align-items: center !important;
             width: auto !important;
             margin: 0 !important;
@@ -763,7 +850,7 @@
 
         [data-testid="stFileUploader"] section {
             display: flex !important;
-            justify-content: center !important;
+            justify-content: flex-end !important;
             align-items: center !important;
             width: auto !important;
             margin: 0 !important;
@@ -772,7 +859,7 @@
 
         [data-testid="stFileUploaderDropzone"] {
             display: flex !important;
-            justify-content: center !important;
+            justify-content: flex-end !important;
             align-items: center !important;
             width: auto !important;
             cursor: pointer !important;
@@ -780,19 +867,19 @@
             padding: 0 !important;
         }
 
-        /* Styling tombol Upload File pada Dropzone (mengganti tulisan 'Browse files' menjadi 'Upload File') */
-        [data-testid="stFileUploaderDropzone"] button {
+        /* Styling HANYA tombol Browse Files pada Dropzone (KECUALIKAN tombol delete minimal) */
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"] {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
-            color: #ffffff !important;
+            color: transparent !important;
             border-radius: 12px !important;
-            font-size: 0 !important; /* Sembunyikan teks asli 'Browse files' */
+            font-size: 0 !important;
             line-height: 1 !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
             padding: 0 24px !important;
-            min-width: 175px !important;
+            min-width: 165px !important;
             height: 42px !important;
             box-sizing: border-box !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important; /* Hilangkan efek glow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important;
             cursor: pointer !important;
             transition: all 0.2s ease !important;
             white-space: nowrap !important;
@@ -800,12 +887,23 @@
             align-items: center !important;
             justify-content: center !important;
             gap: 8px !important;
-            margin: 0 auto !important;
+            margin: 0 !important;
             vertical-align: middle !important;
+            position: relative !important;
         }
 
-        [data-testid="stFileUploaderDropzone"] button::before {
-            content: "";
+        /* Sembunyikan TOTAL seluruh child di dalam tombol browse agar ligature icon seperti 'upload' tidak muncul */
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"] * {
+            display: none !important;
+            visibility: hidden !important;
+            font-size: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* Ikon Upload Bersih SVG */
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"]::before {
+            content: "" !important;
             display: inline-block !important;
             width: 16px !important;
             height: 16px !important;
@@ -818,7 +916,7 @@
         }
 
         /* Teks tombol baru: Upload File */
-        [data-testid="stFileUploaderDropzone"] button::after {
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"]::after {
             content: "Upload File" !important;
             font-size: 0.92rem !important;
             font-weight: 700 !important;
@@ -829,21 +927,28 @@
             line-height: 1 !important;
         }
 
-        [data-testid="stFileUploaderDropzone"] button:hover {
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"]:hover {
             transform: translateY(-1px) !important;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important; /* Hilangkan glow saat hover */
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
             border-color: rgba(255, 255, 255, 0.35) !important;
         }
 
-        [data-testid="stFileUploaderDropzone"] button:active {
+        [data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"]:active {
             transform: translateY(1px) !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
         }
 
-        /* Saat file sudah terunggah: sembunyikan tombol dropzone agar tidak tumpang tindih */
-        [data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"] {
+        /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel */
+        [data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
+        [data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"] {
             display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none !important;
         }
 
         /* Container kartu file yang sudah terunggah */
@@ -916,7 +1021,8 @@
             padding: 0 !important;
         }
 
-        [data-testid="stFileUploaderDeleteBtn"] button {
+        [data-testid="stFileUploaderDeleteBtn"] button,
+        button[data-testid="stBaseButton-minimal"] {
             background: rgba(239, 68, 68, 0.14) !important;
             border: 1px solid rgba(239, 68, 68, 0.3) !important;
             border-radius: 8px !important;
@@ -925,7 +1031,9 @@
             height: 28px !important;
             width: 28px !important;
             min-width: 28px !important;
+            max-width: 28px !important;
             min-height: 28px !important;
+            max-height: 28px !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -934,9 +1042,11 @@
             box-shadow: none !important;
             transform: none !important;
             position: relative !important;
+            box-sizing: border-box !important;
         }
 
-        [data-testid="stFileUploaderDeleteBtn"] button:hover {
+        [data-testid="stFileUploaderDeleteBtn"] button:hover,
+        button[data-testid="stBaseButton-minimal"]:hover {
             background: rgba(239, 68, 68, 0.35) !important;
             border-color: rgba(239, 68, 68, 0.7) !important;
             color: #ffffff !important;
@@ -944,8 +1054,16 @@
             box-shadow: 0 2px 10px rgba(239, 68, 68, 0.45) !important;
         }
 
+        /* Pastikan TIDAK ADA teks pseudo-element pada tombol delete */
+        [data-testid="stFileUploaderDeleteBtn"] button::after,
+        button[data-testid="stBaseButton-minimal"]::after {
+            content: none !important;
+            display: none !important;
+        }
+
         /* Sembunyikan icon bawaan X */
-        [data-testid="stFileUploaderDeleteBtn"] button svg {
+        [data-testid="stFileUploaderDeleteBtn"] button svg,
+        button[data-testid="stBaseButton-minimal"] svg {
             display: none !important;
             visibility: hidden !important;
             width: 0 !important;
@@ -953,7 +1071,8 @@
         }
 
         /* Ikon tempat sampah (Trash Can Icon) modern */
-        [data-testid="stFileUploaderDeleteBtn"] button::before {
+        [data-testid="stFileUploaderDeleteBtn"] button::before,
+        button[data-testid="stBaseButton-minimal"]::before {
             content: "" !important;
             display: inline-block !important;
             width: 16px !important;
@@ -966,74 +1085,17 @@
             transition: all 0.2s ease !important;
         }
 
-        [data-testid="stFileUploaderDeleteBtn"] button:hover::before {
+        [data-testid="stFileUploaderDeleteBtn"] button:hover::before,
+        button[data-testid="stBaseButton-minimal"]:hover::before {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/%3E%3C/svg%3E") !important;
-        }
-
-        [data-testid="stFileUploaderDeleteBtn"] button::after {
-            content: none !important;
-            display: none !important;
-        }
-
-        /* Format hint text di bawah tombol upload file Langkah 1 - Posisi Center Presisi & Sejajar Vertikal */
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) > div[data-testid="stColumn"] {
-            align-self: center !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child {
-            align-items: flex-end !important;
-            justify-content: center !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlockBorderWrapper"] {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-end !important;
-            justify-content: center !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"] {
-            width: fit-content !important;
-            max-width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            margin-left: auto !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding: 0 !important;
-            gap: 2px !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
-            width: 100% !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stMarkdown"],
-        div[data-testid="stHorizontalBlock"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stMarkdownContainer"] {
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
         }
 
         .step1-upload-hint {
             font-size: 0.77rem !important;
             line-height: 1.1 !important;
             color: #94a3b8 !important;
-            text-align: center !important;
-            margin: 2px auto 0 auto !important;
+            text-align: right !important;
+            margin: 4px 0 0 0 !important;
             padding: 0 !important;
             letter-spacing: 0.15px !important;
             white-space: nowrap !important;

@@ -86,18 +86,21 @@ render_html(
 # ================================================================
 # LANGKAH 1 (ATAS): Unggah File Data Operasional
 # ================================================================
-u_col1, u_col2 = st.columns([2.2, 1.8], vertical_alignment="center", gap="medium")
-with u_col1:
-    render_template("step1_header.html")
+with st.container(border=True):
+    render_html('<div id="step1-card-marker" style="display:none;"></div>')
+    u_col1, u_col2 = st.columns([2.2, 1.8], vertical_alignment="center", gap="medium")
+    with u_col1:
+        render_template("step1_header.html")
 
-with u_col2:
-    uploaded = st.file_uploader(
-        "Pilih file data aktivitas kontainer",
-        type=["xlsx", "xls", "csv"],
-        label_visibility="collapsed",
-        key="file_uploader_widget",
-    )
-    render_html('<div class="step1-upload-hint">(.xlsx, .xls, .csv &lt;200 MB)</div>')
+    with u_col2:
+        uploaded = st.file_uploader(
+            "Pilih file data aktivitas kontainer",
+            type=["xlsx", "xls", "csv"],
+            label_visibility="collapsed",
+            key="file_uploader_widget",
+        )
+        if uploaded is None:
+            render_html('<div class="step1-upload-hint">(.xlsx, .xls, .csv &lt;200 MB)</div>')
 
 # Alur Kerja Bertahap: Jika belum ada file diunggah, Langkah 2 & 3 tidak muncul
 if uploaded is None:
@@ -297,344 +300,356 @@ with st.container(border=True):
             width=0,
         )
 
-monthly = summary["monthly"].reset_index().rename(columns={"BULAN": "Bulan"})
+    monthly = summary["monthly"].reset_index().rename(columns={"BULAN": "Bulan"})
 
-# 4 Tab Hasil Analisis
-tab_dual, tab_twinlift, tab_vessel, tab_download = st.tabs(
-    ["Dual Cycle", "Twinlift", "Per Vessel", "Download Hasil Analisis"]
-)
+    # 4 Tab Hasil Analisis
+    tab_dual, tab_twinlift, tab_vessel, tab_download = st.tabs(
+        ["Dual Cycle", "Twinlift", "Per Vessel", "Download Hasil Analisis"]
+    )
 
-# ----------------------------------------------------------------
-# TAB 1: DUAL CYCLE
-# ----------------------------------------------------------------
-with tab_dual:
-    k1, k2, k3, k4, k5, k6 = st.columns(6)
-    with k1:
-        render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Ritase Truk", variant="blue")
-    with k2:
-        render_kpi_card("Dual Cycle", f"{summary['total_dual']:,}", badge="Optimal", variant="emerald")
-    with k3:
-        render_kpi_card("Non Dual", f"{summary['total_single']:,}", badge="Single", variant="slate")
-    with k4:
-        pct_dual_val = summary["pct_dual"] * 100
-        render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", badge="Efisiensi", variant="blue")
-    with k5:
-        render_kpi_card("Container LOAD", f"{summary['container_load']:,}", subtext="Total Muat", variant="blue")
-    with k6:
-        render_kpi_card("Container DISC", f"{summary['container_disc']:,}", subtext="Total Bongkar", variant="slate")
+    # ----------------------------------------------------------------
+    # TAB 1: DUAL CYCLE
+    # ----------------------------------------------------------------
+    with tab_dual:
+        k1, k2, k3, k4, k5, k6 = st.columns(6)
+        with k1:
+            render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Ritase Truk", variant="blue")
+        with k2:
+            render_kpi_card("Dual Cycle", f"{summary['total_dual']:,}", badge="Optimal", variant="emerald")
+        with k3:
+            render_kpi_card("Non Dual", f"{summary['total_single']:,}", badge="Single", variant="slate")
+        with k4:
+            pct_dual_val = summary["pct_dual"] * 100
+            render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", badge="Efisiensi", variant="blue")
+        with k5:
+            render_kpi_card("Container LOAD", f"{summary['container_load']:,}", subtext="Total Muat", variant="blue")
+        with k6:
+            render_kpi_card("Container DISC", f"{summary['container_disc']:,}", subtext="Total Bongkar", variant="slate")
 
-    cc1, cc2 = st.columns(2)
-    with cc1:
-        pie_df = pd.DataFrame(
-            {"Status": ["Dual Cycle", "Non Dual"], "Jumlah": [summary["total_dual"], summary["total_single"]]}
-        )
-        fig_pie = px.pie(
-            pie_df,
-            names="Status",
-            values="Jumlah",
-            hole=0.52,
-            title="Dual Cycle vs Non Dual (berbasis Event)",
-            color="Status",
-            color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
-        )
-        fig_pie.update_traces(
-            textinfo="percent+label",
-            textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
-            marker=dict(line=dict(color="#ffffff", width=2)),
-        )
-        apply_glass_theme(fig_pie)
-        st.plotly_chart(fig_pie, width="stretch")
-
-    with cc2:
-        container_df = pd.DataFrame(
-            {
-                "Container": ["Combo", "Combo", "Single", "Single"],
-                "Status": ["Dual Cycle", "Non Dual", "Dual Cycle", "Non Dual"],
-                "Jumlah": [
-                    summary["combo_dual"],
-                    summary["combo_single"],
-                    summary["single_dual"],
-                    summary["single_single"],
-                ],
-            }
-        )
-        fig_bar = px.bar(
-            container_df,
-            x="Container",
-            y="Jumlah",
-            color="Status",
-            barmode="group",
-            title="Rincian Container x Status (Event)",
-            color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
-            text="Jumlah",
-        )
-        fig_bar.update_traces(marker=dict(line=dict(color="#ffffff", width=1)))
-        apply_glass_theme(fig_bar)
-        st.plotly_chart(fig_bar, width="stretch")
-
-    if len(monthly) > 0:
-        monthly_dual_pct = monthly.melt(
-            id_vars="Bulan",
-            value_vars=["pct_dual", "pct_non_dual"],
-            var_name="Kategori",
-            value_name="Persentase",
-        )
-        monthly_dual_pct["Kategori"] = monthly_dual_pct["Kategori"].map(
-            {"pct_dual": "Dual Cycle", "pct_non_dual": "Non Dual"}
-        )
-        monthly_dual_pct["Persentase"] = monthly_dual_pct["Persentase"] * 100
-
-        fig_month_dual = px.bar(
-            monthly_dual_pct,
-            x="Bulan",
-            y="Persentase",
-            color="Kategori",
-            barmode="stack",
-            title="Breakdown Bulanan: Dual Cycle vs Non Dual (%)",
-            color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
-            text_auto=".1f",
-        )
-        fig_month_dual.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
-        apply_glass_theme(fig_month_dual)
-        st.plotly_chart(fig_month_dual, width="stretch")
-
-        monthly_container_pct = monthly.melt(
-            id_vars="Bulan",
-            value_vars=["pct_combo", "pct_single"],
-            var_name="Kategori",
-            value_name="Persentase",
-        )
-        monthly_container_pct["Kategori"] = monthly_container_pct["Kategori"].map(
-            {"pct_combo": "Combo", "pct_single": "Single"}
-        )
-        monthly_container_pct["Persentase"] = monthly_container_pct["Persentase"] * 100
-
-        fig_month_container = px.bar(
-            monthly_container_pct,
-            x="Bulan",
-            y="Persentase",
-            color="Kategori",
-            barmode="stack",
-            title="Breakdown Bulanan: Combo vs Single (%)",
-            color_discrete_map={"Combo": "#0EA5E9", "Single": "#64748B"},
-            text_auto=".1f",
-        )
-        fig_month_container.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
-        apply_glass_theme(fig_month_container)
-        st.plotly_chart(fig_month_container, width="stretch")
-
-# ----------------------------------------------------------------
-# TAB 2: TWINLIFT
-# ----------------------------------------------------------------
-with tab_twinlift:
-    render_template("tab_twinlift_info.html", ambang_twinlift=hasil["ambang_twinlift"])
-
-    t1, t2, t3, t4 = st.columns(4)
-    with t1:
-        render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Basis Perhitungan", variant="blue")
-    with t2:
-        render_kpi_card("Twinlift", f"{summary['total_twinlift']:,}", badge="Optimum", variant="emerald")
-    with t3:
-        render_kpi_card("Bukan Twinlift", f"{summary['total_non_twinlift']:,}", badge="Reguler", variant="slate")
-    with t4:
-        pct_twin_val = summary["pct_twinlift_of_total"] * 100
-        render_kpi_card("% Twinlift", f"{pct_twin_val:.1f}%", badge="Rasio Event", variant="blue")
-
-    tc1, tc2 = st.columns(2)
-    with tc1:
-        if summary["total_event"] > 0:
-            twin_df = pd.DataFrame(
-                {
-                    "Status": ["Twinlift", "Bukan Twinlift"],
-                    "Jumlah": [summary["total_twinlift"], summary["total_non_twinlift"]],
-                }
+        cc1, cc2 = st.columns(2)
+        with cc1:
+            pie_df = pd.DataFrame(
+                {"Status": ["Dual Cycle", "Non Dual"], "Jumlah": [summary["total_dual"], summary["total_single"]]}
             )
-            fig_twin_pie = px.pie(
-                twin_df,
+            pie_df = pie_df[pie_df["Jumlah"] > 0]
+            fig_pie = px.pie(
+                pie_df,
                 names="Status",
                 values="Jumlah",
                 hole=0.52,
-                title="Twinlift vs Bukan Twinlift (dari Total Event)",
+                title="Dual Cycle vs Non Dual (berbasis Event)",
                 color="Status",
-                color_discrete_map={"Twinlift": "#0284C7", "Bukan Twinlift": "#94A3B8"},
+                color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
             )
-            fig_twin_pie.update_traces(
+            fig_pie.update_traces(
                 textinfo="percent+label",
+                textposition="inside",
+                insidetextorientation="horizontal",
                 textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                 marker=dict(line=dict(color="#ffffff", width=2)),
             )
-            apply_glass_theme(fig_twin_pie)
-            st.plotly_chart(fig_twin_pie, width="stretch")
-        else:
-            st.info("Tidak ada event pada data ini.")
+            apply_glass_theme(fig_pie, margin=dict(t=72, b=25, l=25, r=25))
+            st.plotly_chart(fig_pie, width="stretch")
 
-    with tc2:
+        with cc2:
+            container_df = pd.DataFrame(
+                {
+                    "Container": ["Combo", "Combo", "Single", "Single"],
+                    "Status": ["Dual Cycle", "Non Dual", "Dual Cycle", "Non Dual"],
+                    "Jumlah": [
+                        summary["combo_dual"],
+                        summary["combo_single"],
+                        summary["single_dual"],
+                        summary["single_single"],
+                    ],
+                }
+            )
+            fig_bar = px.bar(
+                container_df,
+                x="Container",
+                y="Jumlah",
+                color="Status",
+                barmode="group",
+                title="Rincian Container x Status (Event)",
+                color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
+                text="Jumlah",
+            )
+            fig_bar.update_traces(marker=dict(line=dict(color="#ffffff", width=1)))
+            apply_glass_theme(fig_bar)
+            st.plotly_chart(fig_bar, width="stretch")
+
         if len(monthly) > 0:
-            monthly_twin_pct = monthly.melt(
+            monthly_dual_pct = monthly.melt(
                 id_vars="Bulan",
-                value_vars=["pct_twinlift", "pct_non_twinlift"],
+                value_vars=["pct_dual", "pct_non_dual"],
                 var_name="Kategori",
                 value_name="Persentase",
             )
-            monthly_twin_pct["Kategori"] = monthly_twin_pct["Kategori"].map(
-                {"pct_twinlift": "Twinlift", "pct_non_twinlift": "Bukan Twinlift"}
+            monthly_dual_pct["Kategori"] = monthly_dual_pct["Kategori"].map(
+                {"pct_dual": "Dual Cycle", "pct_non_dual": "Non Dual"}
             )
-            monthly_twin_pct["Persentase"] = monthly_twin_pct["Persentase"] * 100
+            monthly_dual_pct["Persentase"] = monthly_dual_pct["Persentase"] * 100
 
-            fig_month_twin = px.bar(
-                monthly_twin_pct,
+            fig_month_dual = px.bar(
+                monthly_dual_pct,
                 x="Bulan",
                 y="Persentase",
                 color="Kategori",
                 barmode="stack",
-                title="Breakdown Bulanan: Twinlift vs Bukan Twinlift (% dari Total Event)",
-                color_discrete_map={"Twinlift": "#0284C7", "Bukan Twinlift": "#94A3B8"},
+                title="Breakdown Bulanan: Dual Cycle vs Non Dual (%)",
+                color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
                 text_auto=".1f",
             )
-            fig_month_twin.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
-            apply_glass_theme(fig_month_twin)
-            st.plotly_chart(fig_month_twin, width="stretch")
+            fig_month_dual.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
+            apply_glass_theme(fig_month_dual)
+            st.plotly_chart(fig_month_dual, width="stretch")
 
-# ----------------------------------------------------------------
-# TAB 3: ANALISIS PER VESSEL
-# ----------------------------------------------------------------
-with tab_vessel:
-    render_template("tab_vessel_info.html")
+            monthly_container_pct = monthly.melt(
+                id_vars="Bulan",
+                value_vars=["pct_combo", "pct_single"],
+                var_name="Kategori",
+                value_name="Persentase",
+            )
+            monthly_container_pct["Kategori"] = monthly_container_pct["Kategori"].map(
+                {"pct_combo": "Combo", "pct_single": "Single"}
+            )
+            monthly_container_pct["Persentase"] = monthly_container_pct["Persentase"] * 100
 
-    ves_id_bersih = out_df["VES_ID"].dropna().astype(str).str.strip()
-    ves_id_bersih = ves_id_bersih[ves_id_bersih != ""]
-    vessel_options = sorted(ves_id_bersih.unique().tolist())
+            fig_month_container = px.bar(
+                monthly_container_pct,
+                x="Bulan",
+                y="Persentase",
+                color="Kategori",
+                barmode="stack",
+                title="Breakdown Bulanan: Combo vs Single (%)",
+                color_discrete_map={"Combo": "#0EA5E9", "Single": "#64748B"},
+                text_auto=".1f",
+            )
+            fig_month_container.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
+            apply_glass_theme(fig_month_container)
+            st.plotly_chart(fig_month_container, width="stretch")
 
-    if len(vessel_options) == 0:
-        st.info("Tidak ada data VES_ID pada hasil analisis ini.")
-    else:
-        selected_vessel = st.selectbox("Cari / pilih VES_ID", vessel_options)
-        vessel_df = out_df[out_df["VES_ID"].astype(str).str.strip() == selected_vessel]
+    # ----------------------------------------------------------------
+    # TAB 2: TWINLIFT
+    # ----------------------------------------------------------------
+    with tab_twinlift:
+        render_template("tab_twinlift_info.html", ambang_twinlift=hasil["ambang_twinlift"])
 
-        total_rec = len(vessel_df)
-        dual_rec = int((vessel_df["STATUS"] == "Dual Cycle").sum())
-        non_dual_rec = total_rec - dual_rec
-        twinlift_rec = int((vessel_df["TWINLIFT_STATUS"] == "Twinlift").sum())
-        non_twinlift_rec = total_rec - twinlift_rec
-        combo_rec = int((vessel_df["CONTAINER_STATUS"] == "Combo").sum())
-        single_rec = total_rec - combo_rec
+        t1, t2, t3, t4 = st.columns(4)
+        with t1:
+            render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Basis Perhitungan", variant="blue")
+        with t2:
+            render_kpi_card("Twinlift", f"{summary['total_twinlift']:,}", badge="Optimum", variant="emerald")
+        with t3:
+            render_kpi_card("Bukan Twinlift", f"{summary['total_non_twinlift']:,}", badge="Reguler", variant="slate")
+        with t4:
+            pct_twin_val = summary["pct_twinlift_of_total"] * 100
+            render_kpi_card("% Twinlift", f"{pct_twin_val:.1f}%", badge="Rasio Event", variant="blue")
 
-        v1, v2, v3, v4, v5 = st.columns(5)
-        with v1:
-            render_kpi_card("Total Aktivitas", f"{total_rec:,}", subtext="Baris Data", variant="blue")
-        with v2:
-            render_kpi_card("Dual Cycle", f"{dual_rec:,}", badge="Event", variant="emerald")
-        with v3:
-            pct_dual_v = (dual_rec / total_rec * 100) if total_rec else 0
-            render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", badge="Rasio", variant="blue")
-        with v4:
-            render_kpi_card("Twinlift", f"{twinlift_rec:,}", badge="Event", variant="emerald")
-        with v5:
-            pct_twin_v = (twinlift_rec / total_rec * 100) if total_rec else 0
-            render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", badge="Rasio", variant="blue")
-
-        vc1, vc2 = st.columns(2)
-        with vc1:
-            if total_rec > 0:
-                pie_dual_v = pd.DataFrame(
-                    {"Status": ["Dual Cycle", "Non Dual"], "Jumlah": [dual_rec, non_dual_rec]}
+        tc1, tc2 = st.columns(2)
+        with tc1:
+            if summary["total_event"] > 0:
+                twin_df = pd.DataFrame(
+                    {
+                        "Status": ["Twinlift", "Bukan Twinlift"],
+                        "Jumlah": [summary["total_twinlift"], summary["total_non_twinlift"]],
+                    }
                 )
-                fig_v1 = px.pie(
-                    pie_dual_v,
+                twin_df = twin_df[twin_df["Jumlah"] > 0]
+                fig_twin_pie = px.pie(
+                    twin_df,
                     names="Status",
                     values="Jumlah",
                     hole=0.52,
-                    title=f"Dual Cycle vs Non Dual — {selected_vessel}",
-                    color="Status",
-                    color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
-                )
-                fig_v1.update_traces(
-                    textinfo="percent+label",
-                    textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
-                    marker=dict(line=dict(color="#ffffff", width=2)),
-                )
-                apply_glass_theme(fig_v1)
-                st.plotly_chart(fig_v1, width="stretch")
-
-        with vc2:
-            if total_rec > 0:
-                pie_twin_v = pd.DataFrame(
-                    {"Status": ["Twinlift", "Bukan Twinlift"], "Jumlah": [twinlift_rec, non_twinlift_rec]}
-                )
-                fig_v2 = px.pie(
-                    pie_twin_v,
-                    names="Status",
-                    values="Jumlah",
-                    hole=0.52,
-                    title=f"Twinlift vs Bukan Twinlift — {selected_vessel}",
+                    title="Twinlift vs Bukan Twinlift (dari Total Event)",
                     color="Status",
                     color_discrete_map={"Twinlift": "#0284C7", "Bukan Twinlift": "#94A3B8"},
                 )
-                fig_v2.update_traces(
+                fig_twin_pie.update_traces(
                     textinfo="percent+label",
+                    textposition="inside",
+                    insidetextorientation="horizontal",
                     textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
                     marker=dict(line=dict(color="#ffffff", width=2)),
                 )
-                apply_glass_theme(fig_v2)
-                st.plotly_chart(fig_v2, width="stretch")
+                apply_glass_theme(fig_twin_pie, margin=dict(t=72, b=25, l=25, r=25))
+                st.plotly_chart(fig_twin_pie, width="stretch")
+            else:
+                st.info("Tidak ada event pada data ini.")
 
-        vcont_df = pd.DataFrame(
-            {"Container": ["Combo", "Single"], "Jumlah": [combo_rec, single_rec]}
-        )
-        fig_v3 = px.bar(
-            vcont_df,
-            x="Container",
-            y="Jumlah",
-            title=f"Combo vs Single — {selected_vessel}",
-            color="Container",
-            color_discrete_map={"Combo": "#0EA5E9", "Single": "#64748B"},
-            text="Jumlah",
-        )
-        apply_glass_theme(fig_v3)
-        st.plotly_chart(fig_v3, width="stretch")
+        with tc2:
+            if len(monthly) > 0:
+                monthly_twin_pct = monthly.melt(
+                    id_vars="Bulan",
+                    value_vars=["pct_twinlift", "pct_non_twinlift"],
+                    var_name="Kategori",
+                    value_name="Persentase",
+                )
+                monthly_twin_pct["Kategori"] = monthly_twin_pct["Kategori"].map(
+                    {"pct_twinlift": "Twinlift", "pct_non_twinlift": "Bukan Twinlift"}
+                )
+                monthly_twin_pct["Persentase"] = monthly_twin_pct["Persentase"] * 100
 
-# ----------------------------------------------------------------
-# TAB 4: DOWNLOAD HASIL ANALISIS
-# ----------------------------------------------------------------
-with tab_download:
-    st.dataframe(out_df.head(1000), use_container_width=True, height=400)
-    if len(out_df) > 1000:
-        st.caption(
-            f"Menampilkan 1.000 baris pertama dari total {len(out_df):,} baris. "
-            "Gunakan tombol di bawah untuk mengunduh dataset lengkap."
-        )
+                fig_month_twin = px.bar(
+                    monthly_twin_pct,
+                    x="Bulan",
+                    y="Persentase",
+                    color="Kategori",
+                    barmode="stack",
+                    title="Breakdown Bulanan: Twinlift vs Bukan Twinlift (% dari Total Event)",
+                    color_discrete_map={"Twinlift": "#0284C7", "Bukan Twinlift": "#94A3B8"},
+                    text_auto=".1f",
+                )
+                fig_month_twin.update_layout(yaxis=dict(title="% dari Total Event", range=[0, 100]))
+                apply_glass_theme(fig_month_twin)
+                st.plotly_chart(fig_month_twin, width="stretch")
 
-    hasil_sig = (
-        hasil["ambang_combo"],
-        hasil["ambang_dual"],
-        hasil["ambang_twinlift"],
-        len(out_df),
-    )
-    if st.session_state.get("_download_sig") != hasil_sig:
-        st.session_state.pop("_csv_bytes", None)
-        st.session_state.pop("_excel_bytes", None)
-        st.session_state["_download_sig"] = hasil_sig
+    # ----------------------------------------------------------------
+    # TAB 3: ANALISIS PER VESSEL
+    # ----------------------------------------------------------------
+    with tab_vessel:
+        render_template("tab_vessel_info.html")
 
-    if "_csv_bytes" not in st.session_state:
-        st.session_state["_csv_bytes"] = out_df.to_csv(index=False).encode("utf-8-sig")
-    if "_excel_bytes" not in st.session_state:
-        with st.spinner("Menyiapkan file Excel (data saja, ringan & cepat)..."):
-            st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
+        ves_id_bersih = out_df["VES_ID"].dropna().astype(str).str.strip()
+        ves_id_bersih = ves_id_bersih[ves_id_bersih != ""]
+        vessel_options = sorted(ves_id_bersih.unique().tolist())
 
-    dcol1, dcol2 = st.columns(2)
-    with dcol1:
-        st.download_button(
-            "Download CSV (Dataset Lengkap)",
-            data=st.session_state["_csv_bytes"],
-            file_name="Hasil_Analisis_Dual_Cycle.csv",
-            mime="text/csv",
-            use_container_width=True,
+        if len(vessel_options) == 0:
+            st.info("Tidak ada data VES_ID pada hasil analisis ini.")
+        else:
+            selected_vessel = st.selectbox("Cari / pilih VES_ID", vessel_options)
+            vessel_df = out_df[out_df["VES_ID"].astype(str).str.strip() == selected_vessel]
+
+            total_rec = len(vessel_df)
+            dual_rec = int((vessel_df["STATUS"] == "Dual Cycle").sum())
+            non_dual_rec = total_rec - dual_rec
+            twinlift_rec = int((vessel_df["TWINLIFT_STATUS"] == "Twinlift").sum())
+            non_twinlift_rec = total_rec - twinlift_rec
+            combo_rec = int((vessel_df["CONTAINER_STATUS"] == "Combo").sum())
+            single_rec = total_rec - combo_rec
+
+            v1, v2, v3, v4, v5 = st.columns(5)
+            with v1:
+                render_kpi_card("Total Aktivitas", f"{total_rec:,}", subtext="Baris Data", variant="blue")
+            with v2:
+                render_kpi_card("Dual Cycle", f"{dual_rec:,}", badge="Event", variant="emerald")
+            with v3:
+                pct_dual_v = (dual_rec / total_rec * 100) if total_rec else 0
+                render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", badge="Rasio", variant="blue")
+            with v4:
+                render_kpi_card("Twinlift", f"{twinlift_rec:,}", badge="Event", variant="emerald")
+            with v5:
+                pct_twin_v = (twinlift_rec / total_rec * 100) if total_rec else 0
+                render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", badge="Rasio", variant="blue")
+
+            vc1, vc2 = st.columns(2)
+            with vc1:
+                if total_rec > 0:
+                    pie_dual_v = pd.DataFrame(
+                        {"Status": ["Dual Cycle", "Non Dual"], "Jumlah": [dual_rec, non_dual_rec]}
+                    )
+                    pie_dual_v = pie_dual_v[pie_dual_v["Jumlah"] > 0]
+                    fig_v1 = px.pie(
+                        pie_dual_v,
+                        names="Status",
+                        values="Jumlah",
+                        hole=0.52,
+                        title=f"Dual Cycle vs Non Dual — {selected_vessel}",
+                        color="Status",
+                        color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
+                    )
+                    fig_v1.update_traces(
+                        textinfo="percent+label",
+                        textposition="inside",
+                        insidetextorientation="horizontal",
+                        textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
+                        marker=dict(line=dict(color="#ffffff", width=2)),
+                    )
+                    apply_glass_theme(fig_v1, margin=dict(t=72, b=25, l=25, r=25))
+                    st.plotly_chart(fig_v1, width="stretch")
+
+            with vc2:
+                if total_rec > 0:
+                    pie_twin_v = pd.DataFrame(
+                        {"Status": ["Twinlift", "Bukan Twinlift"], "Jumlah": [twinlift_rec, non_twinlift_rec]}
+                    )
+                    pie_twin_v = pie_twin_v[pie_twin_v["Jumlah"] > 0]
+                    fig_v2 = px.pie(
+                        pie_twin_v,
+                        names="Status",
+                        values="Jumlah",
+                        hole=0.52,
+                        title=f"Twinlift vs Bukan Twinlift — {selected_vessel}",
+                        color="Status",
+                        color_discrete_map={"Twinlift": "#0284C7", "Bukan Twinlift": "#94A3B8"},
+                    )
+                    fig_v2.update_traces(
+                        textinfo="percent+label",
+                        textposition="inside",
+                        insidetextorientation="horizontal",
+                        textfont=dict(family="Plus Jakarta Sans", size=12, color="#ffffff"),
+                        marker=dict(line=dict(color="#ffffff", width=2)),
+                    )
+                    apply_glass_theme(fig_v2, margin=dict(t=72, b=25, l=25, r=25))
+                    st.plotly_chart(fig_v2, width="stretch")
+
+            vcont_df = pd.DataFrame(
+                {"Container": ["Combo", "Single"], "Jumlah": [combo_rec, single_rec]}
+            )
+            fig_v3 = px.bar(
+                vcont_df,
+                x="Container",
+                y="Jumlah",
+                title=f"Combo vs Single — {selected_vessel}",
+                color="Container",
+                color_discrete_map={"Combo": "#0EA5E9", "Single": "#64748B"},
+                text="Jumlah",
+            )
+            apply_glass_theme(fig_v3)
+            st.plotly_chart(fig_v3, width="stretch")
+
+    # ----------------------------------------------------------------
+    # TAB 4: DOWNLOAD HASIL ANALISIS
+    # ----------------------------------------------------------------
+    with tab_download:
+        st.dataframe(out_df.head(1000), use_container_width=True, height=400)
+        if len(out_df) > 1000:
+            st.caption(
+                f"Menampilkan 1.000 baris pertama dari total {len(out_df):,} baris. "
+                "Gunakan tombol di bawah untuk mengunduh dataset lengkap."
+            )
+
+        hasil_sig = (
+            hasil["ambang_combo"],
+            hasil["ambang_dual"],
+            hasil["ambang_twinlift"],
+            len(out_df),
         )
-    with dcol2:
-        st.download_button(
-            "Download Excel (Dataset Lengkap)",
-            data=st.session_state["_excel_bytes"],
-            file_name="Hasil_Analisis_Dual_Cycle.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True,
-        )
+        if st.session_state.get("_download_sig") != hasil_sig:
+            st.session_state.pop("_csv_bytes", None)
+            st.session_state.pop("_excel_bytes", None)
+            st.session_state["_download_sig"] = hasil_sig
+
+        if "_csv_bytes" not in st.session_state:
+            st.session_state["_csv_bytes"] = out_df.to_csv(index=False).encode("utf-8-sig")
+        if "_excel_bytes" not in st.session_state:
+            with st.spinner("Menyiapkan file Excel (data saja, ringan & cepat)..."):
+                st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
+
+        dcol1, dcol2 = st.columns(2)
+        with dcol1:
+            st.download_button(
+                "Download CSV (Dataset Lengkap)",
+                data=st.session_state["_csv_bytes"],
+                file_name="Hasil_Analisis_Dual_Cycle.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+        with dcol2:
+            st.download_button(
+                "Download Excel (Dataset Lengkap)",
+                data=st.session_state["_excel_bytes"],
+                file_name="Hasil_Analisis_Dual_Cycle.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
+            )
