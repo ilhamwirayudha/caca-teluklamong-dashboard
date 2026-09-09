@@ -243,9 +243,10 @@ def render_hybrid_loading_indicator(
         status_text=status_text,
         detail_text=detail_text,
     )
-    if placeholder is not None:
-        placeholder.markdown(html, unsafe_allow_html=True)
+    target = placeholder if placeholder is not None else st
+    if hasattr(target, "html"):
+        target.html(html)
     else:
-        st.markdown(html, unsafe_allow_html=True)
+        target.markdown(html, unsafe_allow_html=True)
 
 
