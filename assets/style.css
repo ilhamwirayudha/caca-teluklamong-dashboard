@@ -1445,3 +1445,176 @@
                 transform: translateY(0) scale(1);
             }
         }
+
+        /* ==========================================================================
+           Hybrid Loading Indicator Square Widget
+           ========================================================================== */
+        .caca-hybrid-card {
+            width: 210px !important;
+            height: 210px !important;
+            min-width: 210px !important;
+            min-height: 210px !important;
+            max-width: 210px !important;
+            max-height: 210px !important;
+            box-sizing: border-box !important;
+            aspect-ratio: 1 / 1 !important;
+            margin: 16px auto 22px auto !important;
+            background: rgba(13, 22, 38, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            border-radius: 20px !important;
+            padding: 14px 14px 12px 14px !important;
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 20px rgba(2, 132, 199, 0.18) !important;
+            position: relative !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            text-align: center !important;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+            user-select: none !important;
+        }
+
+        .caca-hybrid-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 18px;
+        }
+
+        .caca-hybrid-status {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            max-width: 155px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .caca-hybrid-card.is-done .caca-hybrid-status {
+            color: #10b981;
+        }
+
+        .caca-hybrid-close {
+            position: absolute;
+            right: -4px;
+            top: -4px;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .caca-hybrid-close:hover {
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .caca-hybrid-gauge {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            min-width: 64px;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px 0;
+        }
+
+        .caca-hybrid-circle-track {
+            stroke: rgba(56, 189, 248, 0.16);
+        }
+
+        .caca-hybrid-circle-arc {
+            stroke: #38bdf8;
+            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+            transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;
+        }
+
+        .caca-hybrid-card.is-done .caca-hybrid-circle-arc {
+            stroke: #10b981;
+            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.45));
+        }
+
+        .caca-hybrid-pct {
+            position: absolute;
+            font-size: 0.90rem;
+            font-weight: 800;
+            color: #38bdf8;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.4px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
+            transition: color 0.3s ease;
+        }
+
+        .caca-hybrid-card.is-done .caca-hybrid-pct {
+            color: #10b981;
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.45);
+        }
+
+        .caca-hybrid-info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .caca-hybrid-fname {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+            line-height: 1.25;
+            max-width: 182px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .caca-hybrid-detail {
+            font-size: 0.66rem;
+            color: #94a3b8;
+            line-height: 1.2;
+            margin-top: 2px;
+            max-width: 182px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .caca-hybrid-bar-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 2px;
+        }
+
+        .caca-hybrid-bar-rect {
+            fill: #38bdf8;
+            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+            transition: width 0.2s ease, fill 0.3s ease;
+        }
+
+        .caca-hybrid-card.is-done .caca-hybrid-bar-rect {
+            fill: #10b981;
+            filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.45));
+        }

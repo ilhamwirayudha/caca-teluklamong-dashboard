@@ -202,10 +202,7 @@ def get_hybrid_loading_indicator_html(
     stroke_dashoffset = round(163.36 * (1 - pct_clamped / 100.0), 2)
 
     is_done = pct_clamped >= 100
-    stroke_color = "#10b981" if is_done else "#38bdf8"
-    text_color = "#10b981" if is_done else "#38bdf8"
-    glow_color = "rgba(16, 185, 129, 0.45)" if is_done else "rgba(56, 189, 248, 0.45)"
-    bar_color = "linear-gradient(90deg, #10b981, #059669)" if is_done else "linear-gradient(90deg, #38bdf8, #0284c7)"
+    done_class = "is-done" if is_done else ""
 
     if not detail_text:
         formatted_detail = file_size
@@ -220,10 +217,7 @@ def get_hybrid_loading_indicator_html(
         stroke_dashoffset=stroke_dashoffset,
         status_text=status_text,
         detail_text=formatted_detail,
-        stroke_color=stroke_color,
-        text_color=text_color,
-        glow_color=glow_color,
-        bar_color=bar_color,
+        done_class=done_class,
     )
 
 

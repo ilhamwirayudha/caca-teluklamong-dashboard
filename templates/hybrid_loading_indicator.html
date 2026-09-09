@@ -1,22 +1,24 @@
-<div id="caca-hybrid-loader" style="width: 210px; height: 210px; min-width: 210px; min-height: 210px; max-width: 210px; max-height: 210px; box-sizing: border-box; aspect-ratio: 1 / 1; margin: 16px auto 22px auto; background: rgba(13, 22, 38, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 20px; padding: 14px 14px 12px 14px; box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 20px rgba(2, 132, 199, 0.18); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; user-select: none;">
-<div style="width: 100%; display: flex; align-items: center; justify-content: center; position: relative; min-height: 18px;">
-<div id="hybrid-status-text" style="font-size: 0.68rem; font-weight: 700; color: {{ text_color }}; letter-spacing: 0.2px; text-transform: uppercase; line-height: 1.2; max-width: 155px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.3s ease;">{{ status_text }}</div>
-<div id="hybrid-close-btn" onclick="var c=document.getElementById('caca-hybrid-loader');if(c){c.style.opacity='0';c.style.transform='scale(0.92)';c.style.transition='all 0.2s ease';setTimeout(function(){c.style.display='none';},200);}" style="position: absolute; right: -4px; top: -4px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; color: #64748b; transition: all 0.2s;" onmouseover="this.style.color='#cbd5e1';this.style.background='rgba(255,255,255,0.08)';" onmouseout="this.style.color='#64748b';this.style.background='transparent';" title="Tutup status">
+<div id="caca-hybrid-loader" class="caca-hybrid-card {{ done_class }}">
+<div class="caca-hybrid-header">
+<div id="hybrid-status-text" class="caca-hybrid-status">{{ status_text }}</div>
+<div id="hybrid-close-btn" class="caca-hybrid-close" onclick="var c=document.getElementById('caca-hybrid-loader');if(c){c.style.opacity='0';c.style.transform='scale(0.92)';c.style.transition='all 0.2s ease';setTimeout(function(){c.style.display='none';},200);}" title="Tutup status">
 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </div>
 </div>
-<div style="position: relative; width: 64px; height: 64px; min-width: 64px; min-height: 64px; display: flex; align-items: center; justify-content: center; margin: 2px 0;">
+<div class="caca-hybrid-gauge">
 <svg width="64" height="64" viewBox="0 0 64 64" style="display: block; width: 64px; height: 64px; overflow: visible;">
-<circle cx="32" cy="32" r="26" stroke="rgba(56, 189, 248, 0.16)" stroke-width="5" fill="none" />
-<circle id="hybrid-circle-progress" cx="32" cy="32" r="26" stroke="{{ stroke_color }}" stroke-width="5" stroke-linecap="round" fill="none" stroke-dasharray="163.36" stroke-dashoffset="{{ stroke_dashoffset }}" transform="rotate(-90 32 32)" style="filter: drop-shadow(0 0 6px {{ glow_color }}); transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;" />
+<circle class="caca-hybrid-circle-track" cx="32" cy="32" r="26" stroke-width="5" fill="none" />
+<circle id="hybrid-circle-progress" class="caca-hybrid-circle-arc" cx="32" cy="32" r="26" stroke-width="5" stroke-linecap="round" fill="none" stroke-dasharray="163.36" stroke-dashoffset="{{ stroke_dashoffset }}" transform="rotate(-90 32 32)" />
 </svg>
-<div id="hybrid-pct-text" style="position: absolute; font-size: 0.90rem; font-weight: 800; color: {{ text_color }}; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.4px; text-shadow: 0 0 8px {{ glow_color }};">{{ pct }}%</div>
+<div id="hybrid-pct-text" class="caca-hybrid-pct">{{ pct }}%</div>
 </div>
-<div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0;">
-<div style="font-size: 0.76rem; font-weight: 700; color: #ffffff; letter-spacing: -0.2px; line-height: 1.25; max-width: 182px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ filename }}">{{ filename }}</div>
-<div style="font-size: 0.66rem; color: #94a3b8; line-height: 1.2; margin-top: 2px; max-width: 182px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ detail_text }}">{{ detail_text }}</div>
+<div class="caca-hybrid-info">
+<div class="caca-hybrid-fname" title="{{ filename }}">{{ filename }}</div>
+<div class="caca-hybrid-detail" title="{{ detail_text }}">{{ detail_text }}</div>
 </div>
-<div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; position: relative; margin-top: 2px;">
-<div id="hybrid-bar-fill" style="width: {{ pct }}%; height: 100%; background: {{ bar_color }}; border-radius: 999px; box-shadow: 0 0 8px {{ glow_color }}; transition: width 0.2s ease, background 0.3s ease;"></div>
+<div class="caca-hybrid-bar-track">
+<svg width="100%" height="4" style="display: block; width: 100%; height: 4px;">
+<rect class="caca-hybrid-bar-rect" height="4" width="{{ pct }}%" rx="2" ry="2" />
+</svg>
 </div>
 </div>
