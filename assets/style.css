@@ -998,12 +998,24 @@
             position: absolute !important;
         }
 
-        /* Saat file sudah terunggah: sembunyikan total dropzone agar tidak ada tombol dobel atau tombol plus */
+        /* Saat file sudah terunggah di Streamlit versi lama: sembunyikan dropzone lama (file di luar dropzone) */
         div[data-testid="stFileUploader"]:has([data-testid="stFileUploaderFile"]) [data-testid="stFileUploaderDropzone"],
         div[data-testid="stFileUploader"]:has(.stFileUploaderFile) [data-testid="stFileUploaderDropzone"],
-        div[data-testid="stFileUploader"]:has([data-testid="stFileChip"]) [data-testid="stFileUploaderDropzone"],
-        div[data-testid="stFileUploader"]:has([data-testid="stFileChips"]) [data-testid="stFileUploaderDropzone"],
         div[data-testid="stFileUploader"]:has(ul li) [data-testid="stFileUploaderDropzone"] {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Pada Streamlit 1.63+: file chips berada di dalam dropzone. Sembunyikan tombol Upload File saat file sudah ada */
+        [data-testid="stFileUploaderDropzone"]:has([data-testid="stFileChips"]) button[data-testid="stBaseButton-secondary"],
+        [data-testid="stFileUploaderDropzone"]:has([data-testid="stFileChip"]) button[data-testid="stBaseButton-secondary"],
+        div[data-testid="stFileUploader"]:has([data-testid="stFileChips"]) button[data-testid="stBaseButton-secondary"],
+        div[data-testid="stFileUploader"]:has([data-testid="stFileChip"]) button[data-testid="stBaseButton-secondary"] {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
