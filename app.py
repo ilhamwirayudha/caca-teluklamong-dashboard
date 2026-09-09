@@ -106,6 +106,8 @@ with st.container(border=True):
             label_visibility="collapsed",
             key="file_uploader_widget",
         )
+        if uploaded is None:
+            render_html('<div class="step1-upload-hint">(.xlsx, .xls, .csv &lt;200 MB)</div>')
 
 # Alur Kerja Bertahap: Jika belum ada file diunggah, Langkah 2 & 3 tidak muncul
 if uploaded is None:
