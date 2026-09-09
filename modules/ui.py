@@ -175,3 +175,25 @@ def render_kpi_card(label: str, value: str, subtext: str = None, badge: str = No
         badge_html=badge_html,
         variant=variant,
     )
+
+
+def format_file_size(size_bytes: int) -> str:
+    """Memformat ukuran byte file ke representasi yang ramah pengguna (KB, MB, GB)."""
+    if size_bytes < 1024:
+        return f"{size_bytes} B"
+    elif size_bytes < 1024 * 1024:
+        return f"{size_bytes / 1024:.1f} KB"
+    elif size_bytes < 1024 * 1024 * 1024:
+        return f"{size_bytes / (1024 * 1024):.1f} MB"
+    return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
+
+
+def render_hybrid_loading_indicator(filename: str, file_size_bytes: int):
+    """Merender komponen hybrid loading indicator (lingkaran progress + status + linear bar)."""
+    file_size = format_file_size(file_size_bytes)
+    render_template(
+        "hybrid_loading_indicator.html",
+        filename=filename,
+        file_size=file_size,
+    )
+

@@ -1,0 +1,110 @@
+<div id="caca-hybrid-loader"
+    style="max-width: 480px; margin: 16px auto 20px auto; background: rgba(13, 22, 38, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 16px; padding: 18px 22px; box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.55), 0 0 24px rgba(2, 132, 199, 0.2); animation: fadeInUp 0.35s ease-out; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+        <!-- Left: Circular Progress Ring (Hybrid Indicator Part 1) -->
+        <div
+            style="position: relative; width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="56" height="56" viewBox="0 0 56 56" style="display: block; overflow: visible;">
+                <!-- Background Track -->
+                <circle cx="28" cy="28" r="22" stroke="rgba(56, 189, 248, 0.2)" stroke-width="5" fill="none" />
+                <!-- Active Progress Arc -->
+                <circle id="hybrid-circle-progress" cx="28" cy="28" r="22" stroke="#38bdf8" stroke-width="5"
+                    stroke-linecap="round" fill="none" stroke-dasharray="138.23" stroke-dashoffset="70.5"
+                    transform="rotate(-90 28 28)"
+                    style="transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));" />
+            </svg>
+            <!-- Percentage Text Inside Circle -->
+            <div id="hybrid-pct-text"
+                style="position: absolute; font-size: 0.85rem; font-weight: 800; color: #38bdf8; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.3px; text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">
+                49%
+            </div>
+        </div>
+
+        <!-- Center: Status & File Information -->
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+            <div id="hybrid-status-text"
+                style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.1px; line-height: 1.25;">
+                Membaca &amp; Memproses Data...
+            </div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; letter-spacing: -0.3px; line-height: 1.3; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                title="{{ filename }}">
+                {{ filename }}
+            </div>
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 2px; line-height: 1.2;">
+                Ukuran: <span style="color: #e2e8f0; font-weight: 600;">{{ file_size }}</span>
+            </div>
+        </div>
+
+        <!-- Right: Dismiss/Cancel Icon Button -->
+        <div id="hybrid-close-btn"
+            style="align-self: flex-start; margin-top: -2px; display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0; cursor: pointer; transition: background 0.2s, transform 0.2s;"
+            onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.transform='scale(1.08)';"
+            onmouseout="this.style.background='transparent';this.style.transform='scale(1)';" title="Tutup status">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Bottom: Linear Progress Bar (Hybrid Indicator Part 2) -->
+    <div
+        style="width: 100%; height: 5px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; margin-top: 14px; position: relative;">
+        <div id="hybrid-bar-fill"
+            style="width: 49%; height: 100%; background: linear-gradient(90deg, #38bdf8, #0284c7); border-radius: 999px; transition: width 0.2s ease, background 0.3s ease; box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);">
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var pct = 15;
+        var circle = document.getElementById('hybrid-circle-progress');
+        var pctText = document.getElementById('hybrid-pct-text');
+        var bar = document.getElementById('hybrid-bar-fill');
+        var statusText = document.getElementById('hybrid-status-text');
+        var closeBtn = document.getElementById('hybrid-close-btn');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                var card = document.getElementById('caca-hybrid-loader');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(-8px)';
+                    card.style.transition = 'all 0.25s ease';
+                    setTimeout(function () { card.style.display = 'none'; }, 250);
+                }
+            });
+        }
+
+        if (!circle || !pctText || !bar) return;
+
+        var circumference = 138.23; // 2 * pi * 22
+        circle.style.strokeDasharray = circumference;
+        circle.style.strokeDashoffset = circumference * (1 - pct / 100);
+        bar.style.width = pct + '%';
+        pctText.textContent = Math.round(pct) + '%';
+
+        var interval = setInterval(function () {
+            if (pct < 95) {
+                var step = Math.max(0.35, (95 - pct) * 0.075);
+                pct = Math.min(95, pct + step);
+                var rounded = Math.round(pct);
+                pctText.textContent = rounded + '%';
+                circle.style.strokeDashoffset = circumference * (1 - pct / 100);
+                bar.style.width = pct + '%';
+
+                if (statusText) {
+                    if (pct < 35) {
+                        statusText.textContent = 'Membaca struktur file...';
+                    } else if (pct < 70) {
+                        statusText.textContent = 'Mengekstrak data sheet operasional...';
+                    } else {
+                        statusText.textContent = 'Memvalidasi data & konfigurasi...';
+                    }
+                }
+            }
+        }, 110);
+    })();
+</script>

@@ -7,6 +7,7 @@ evaluasi rasio Dual Cycle, utilisasi Twin Lift, serta agregasi produktivitas per
 """
 
 from pathlib import Path
+import time
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -35,6 +36,7 @@ from modules.ui import (
     inject_transition_script,
     render_artistic_hero,
     render_html,
+    render_hybrid_loading_indicator,
     render_kpi_card,
     render_template,
 )
@@ -114,6 +116,7 @@ with st.container(border=True):
 if uploaded is None:
     st.session_state.pop("hasil", None)
     st.session_state.pop("_last_file_sig", None)
+    st.session_state.pop("_cached_sheets", None)
     st.stop()
 
 # ================================================================
@@ -125,18 +128,31 @@ file_bytes = uploaded.getvalue()
 file_sig = (uploaded.name, len(file_bytes), hash(file_bytes[:1_000_000]))
 if st.session_state.get("_last_file_sig") != file_sig:
     st.session_state.pop("hasil", None)
+    st.session_state.pop("_cached_sheets", None)
     st.session_state["_last_file_sig"] = file_sig
 
-try:
-    sheets = baca_file(file_bytes, uploaded.name)
-except Exception as e:
-    st.error(
-        "Gagal membaca file yang diupload. Pastikan file tidak corrupt dan "
-        "formatnya benar-benar .xlsx / .xls / .csv."
-    )
-    with st.expander("Detail error (untuk dilaporkan)"):
-        st.exception(e)
-    st.stop()
+# Indikator hybrid loading saat file dibaca pertama kali atau file baru diupload
+loading_placeholder = st.empty()
+
+if "_cached_sheets" not in st.session_state:
+    with loading_placeholder.container():
+        render_hybrid_loading_indicator(uploaded.name, len(file_bytes))
+    try:
+        sheets = baca_file(file_bytes, uploaded.name)
+        st.session_state["_cached_sheets"] = sheets
+        time.sleep(0.35)
+        loading_placeholder.empty()
+    except Exception as e:
+        loading_placeholder.empty()
+        st.error(
+            "Gagal membaca file yang diupload. Pastikan file tidak corrupt dan "
+            "formatnya benar-benar .xlsx / .xls / .csv."
+        )
+        with st.expander("Detail error (untuk dilaporkan)"):
+            st.exception(e)
+        st.stop()
+else:
+    sheets = st.session_state["_cached_sheets"]
 
 if not sheets:
     st.error("File tidak berisi sheet/data apa pun.")
