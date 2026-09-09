@@ -231,9 +231,9 @@
         .glass-card,
         .stTabs,
         [data-testid="stTabs"],
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)),
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)),
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker):not(:has(.artistic-hero)),
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step2-card-marker):not(:has(.artistic-hero)),
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step3-card-marker):not(:has(.artistic-hero)) {
             width: 100% !important;
             max-width: 1280px !important;
             margin-left: auto !important;
@@ -687,16 +687,16 @@
         /* ================================================================
            CONTAINER LANGKAH 1, 2, & 3: JARAK KONSISTEN & VERTICAL CENTERING
            ================================================================ */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)),
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)),
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker):not(:has(.artistic-hero)),
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step2-card-marker):not(:has(.artistic-hero)),
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step3-card-marker):not(:has(.artistic-hero)) {
             background: rgba(13, 22, 38, 0.75) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
             border-radius: 18px !important;
-            padding: 22px 28px !important;
+            padding: 24px 32px !important;
             margin-top: 0 !important;
             margin-bottom: 24px !important;
             box-sizing: border-box !important;
@@ -724,9 +724,9 @@
         }
 
         /* Vertical Block layout inside containers */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step2-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step3-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step2-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"],
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step3-card-marker):not(:has(.artistic-hero)) > div[data-testid="stVerticalBlock"] {
             padding: 0 !important;
             margin: 0 !important;
             gap: 18px !important;
@@ -747,7 +747,7 @@
         }
 
         /* Reset inner column wrappers so only the main outer step container gets card border & background */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"] div[data-testid="stVerticalBlockBorderWrapper"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"] div[data-testid="stVerticalBlockBorderWrapper"] {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
@@ -757,13 +757,13 @@
         }
 
         /* Step 1 Card: Symmetrical & Balanced Vertical Padding (Generous breathing room) */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker):not(:has(.artistic-hero)) {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker):not(:has(.artistic-hero)) {
             padding: 34px 44px !important;
             box-sizing: border-box !important;
         }
 
         /* Step 1 Horizontal Layout: Text & Button Vertically Centered Presisi */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stHorizontalBlock"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stHorizontalBlock"] {
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
@@ -772,7 +772,7 @@
             padding: 0 !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"] {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -781,29 +781,29 @@
             padding: 0 !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:first-child {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"]:first-child {
             justify-content: center !important;
             align-items: flex-start !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"]:last-child {
             align-items: flex-end !important;
             justify-content: center !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stVerticalBlock"] {
             width: fit-content !important;
             max-width: 100% !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: flex-end !important;
             justify-content: center !important;
-            gap: 6px !important;
+            gap: 8px !important;
             margin: 0 0 0 auto !important;
             padding: 0 !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
             width: auto !important;
             max-width: 100% !important;
             flex: 0 0 auto !important;
@@ -828,14 +828,14 @@
             width: 100% !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) p,
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) [data-testid="stMarkdownContainer"] {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) p,
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) [data-testid="stMarkdownContainer"] {
             margin: 0 !important;
             padding: 0 !important;
         }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) [data-testid="stWidgetLabel"],
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) label {
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) [data-testid="stWidgetLabel"],
+        :is(div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]):has(#step1-card-marker) label {
             display: none !important;
             height: 0 !important;
             margin: 0 !important;
