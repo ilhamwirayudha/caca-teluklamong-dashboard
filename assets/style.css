@@ -795,12 +795,10 @@
             width: fit-content !important;
             max-width: 100% !important;
             display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-end !important;
-            justify-content: center !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
             margin: 0 0 0 auto !important;
             padding: 0 !important;
-            gap: 3px !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) div[data-testid="stColumn"]:last-child div[data-testid="stElementContainer"] {
@@ -812,20 +810,6 @@
             justify-content: flex-end !important;
             margin: 0 !important;
             padding: 0 !important;
-        }
-
-        .step1-upload-hint {
-            font-size: 0.74rem !important;
-            line-height: 1.2 !important;
-            color: #94a3b8 !important;
-            text-align: right !important;
-            margin: 0 !important;
-            padding: 0 2px 0 0 !important;
-            letter-spacing: 0.15px !important;
-            white-space: nowrap !important;
-            user-select: none !important;
-            display: block !important;
-            width: auto !important;
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"]:has(#step1-card-marker) p,

@@ -95,7 +95,7 @@ render_html(
 # ================================================================
 with st.container(border=True):
     render_html('<div id="step1-card-marker" style="display:none;"></div>')
-    u_col1, u_col2 = st.columns([2.2, 1.8], vertical_alignment="center", gap="medium")
+    u_col1, u_col2 = st.columns([2.4, 1.6], vertical_alignment="center", gap="medium")
     with u_col1:
         render_template("step1_header.html")
 
@@ -106,8 +106,6 @@ with st.container(border=True):
             label_visibility="collapsed",
             key="file_uploader_widget",
         )
-        if uploaded is None:
-            render_html('<div class="step1-upload-hint">(.xlsx, .xls, .csv &lt;200 MB)</div>')
 
 # Alur Kerja Bertahap: Jika belum ada file diunggah, Langkah 2 & 3 tidak muncul
 if uploaded is None:
