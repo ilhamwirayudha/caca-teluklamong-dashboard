@@ -684,43 +684,29 @@ with st.container(border=True):
             len(out_df),
         )
         if st.session_state.get("_download_sig") != hasil_sig:
-            st.session_state.pop("_csv_bytes", None)
             st.session_state.pop("_excel_bytes", None)
             st.session_state.pop("_excel_sig", None)
             st.session_state["_download_sig"] = hasil_sig
 
-        if "_csv_bytes" not in st.session_state:
-            st.session_state["_csv_bytes"] = out_df.to_csv(index=False).encode("utf-8-sig")
-
         excel_ready = "_excel_bytes" in st.session_state and st.session_state.get("_excel_sig") == hasil_sig
 
-        dcol1, dcol2 = st.columns(2)
-        with dcol1:
-            if excel_ready:
-                st.download_button(
-                    "Download Excel (.xlsx)",
-                    data=st.session_state["_excel_bytes"],
-                    file_name="Hasil_Analisis_Dual_Cycle.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    use_container_width=True,
-                )
-            else:
-                if st.button("Siapkan File Excel (.xlsx)", use_container_width=True):
-                    with st.spinner("Menyiapkan file Excel (data saja, mohon tunggu)..."):
-                        try:
-                            st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
-                            st.session_state["_excel_sig"] = hasil_sig
-                            st.rerun()
-                        except Exception as err:
-                            st.error(f"Gagal membuat file Excel: {err}.")
-        with dcol2:
+        if excel_ready:
             st.download_button(
-                "Download CSV (Alternatif Raw Data)",
-                data=st.session_state["_csv_bytes"],
-                file_name="Hasil_Analisis_Dual_Cycle.csv",
-                mime="text/csv",
+                "📥 Download File Excel (.xlsx)",
+                data=st.session_state["_excel_bytes"],
+                file_name="Hasil_Analisis_Dual_Cycle.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True,
             )
+        else:
+            if st.button("Siapkan File Excel (.xlsx)", use_container_width=True):
+                with st.spinner("Menyiapkan file Excel (mohon tunggu)..."):
+                    try:
+                        st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
+                        st.session_state["_excel_sig"] = hasil_sig
+                        st.rerun()
+                    except Exception as err:
+                        st.error(f"Gagal membuat file Excel: {err}.")
 
         st.caption(
             "💡 **Catatan:** Dashboard ini dikhususkan menggunakan format **.xlsx** untuk menjamin akurasi timestamp dan kalkulasi metrik."

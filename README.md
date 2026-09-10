@@ -66,7 +66,7 @@ Hasil langsung disajikan ke dalam kartu KPI utama dan 4 tab analitik terdedikasi
 - **Tab 1 — Dual Cycle**: Diagram donat persentase siklus, grafik batang perbandingan kontainer, dan grafik tren bulanan efisiensi siklus ganda.
 - **Tab 2 — Twin Lift**: Distribusi kontainer Twin Lift vs Single Lift serta tren utilisasi crane bulanan.
 - **Tab 3 — Per Vessel**: Dropdown pemilihan kapal (*VES_ID*) untuk membedah kinerja alat per kunjungan kapal sandar.
-- **Tab 4 — Download Hasil Analisis**: Pratinjau tabel hasil rekonstruksi (menampilkan 1.000 baris pertama) serta tombol unduh dataset lengkap berformat **CSV** atau **Excel (`.xlsx`)**.
+- **Tab 4 — Download Hasil Analisis**: Pratinjau tabel hasil rekonstruksi (menampilkan 1.000 baris pertama) serta tombol unduh dataset lengkap berformat **Excel (`.xlsx`)**.
 
 ---
 
@@ -167,7 +167,7 @@ Implementasi dashboard CACA memberikan dampak nyata bagi operasional **Pelindo T
   Aksesibilitas          Terbatas di 1 PC Offline    Multi-User Web Browser
   Visualisasi            Tabel Angka Statis          Grafik Interaktif & KPI
   Presisi Perhitungan    Tergantung Operator         100% Terkalibrasi Standar
-  Dukungan Ekspor        Terkunci di Workbook Lama   CSV & Excel Siap Lapor
+  Dukungan Ekspor        Terkunci di Workbook Lama   Excel (.xlsx) Siap Lapor
 =============================================================================
 ```
 
