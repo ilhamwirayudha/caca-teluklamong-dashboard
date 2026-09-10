@@ -367,7 +367,7 @@ with st.container(border=True):
         with k1:
             render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Ritase Truk", variant="blue")
         with k2:
-            render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), variant="emerald")
+            render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), variant="blue")
         with k3:
             render_kpi_card("Non Dual", format_number(summary["total_single"]), variant="slate")
         with k4:
@@ -493,7 +493,7 @@ with st.container(border=True):
         with t1:
             render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Basis Perhitungan", variant="blue")
         with t2:
-            render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), variant="emerald")
+            render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), variant="blue")
         with t3:
             render_kpi_card("Bukan Twinlift", format_number(summary["total_non_twinlift"]), variant="slate")
         with t4:
@@ -587,12 +587,12 @@ with st.container(border=True):
             with v1:
                 render_kpi_card("Total Aktivitas", format_number(total_rec), subtext="Baris Data", variant="blue")
             with v2:
-                render_kpi_card("Dual Cycle", format_number(dual_rec), variant="emerald")
+                render_kpi_card("Dual Cycle", format_number(dual_rec), variant="blue")
             with v3:
                 pct_dual_v = (dual_rec / total_rec * 100) if total_rec else 0
                 render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", variant="blue")
             with v4:
-                render_kpi_card("Twinlift", format_number(twinlift_rec), variant="emerald")
+                render_kpi_card("Twinlift", format_number(twinlift_rec), variant="blue")
             with v5:
                 pct_twin_v = (twinlift_rec / total_rec * 100) if total_rec else 0
                 render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", variant="blue")

@@ -458,6 +458,11 @@
             border-color: rgba(56, 189, 248, 0.45) !important;
         }
 
+        .kpi-card.variant-slate:hover {
+            box-shadow: 0 16px 36px -4px rgba(100, 116, 139, 0.25) !important;
+            border-color: rgba(148, 163, 184, 0.4) !important;
+        }
+
         .kpi-card::before {
             content: '';
             position: absolute;
