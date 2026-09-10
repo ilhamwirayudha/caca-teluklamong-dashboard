@@ -699,7 +699,7 @@ with st.container(border=True):
                 use_container_width=True,
             )
         else:
-            if st.button("Siapkan File Excel (.xlsx)", use_container_width=True):
+            if st.button("Download Hasil Analisis (.xlsx)", use_container_width=True):
                 with st.spinner("Menyiapkan file Excel (mohon tunggu)..."):
                     try:
                         st.session_state["_excel_bytes"] = build_excel_data_only(out_df)
