@@ -367,12 +367,12 @@ with st.container(border=True):
         with k1:
             render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Ritase Truk", variant="blue")
         with k2:
-            render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), badge="Optimal", variant="emerald")
+            render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), variant="emerald")
         with k3:
-            render_kpi_card("Non Dual", format_number(summary["total_single"]), badge="Single", variant="slate")
+            render_kpi_card("Non Dual", format_number(summary["total_single"]), variant="slate")
         with k4:
             pct_dual_val = summary["pct_dual"] * 100
-            render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", badge="Efisiensi", variant="blue")
+            render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", variant="blue")
         with k5:
             render_kpi_card("Container LOAD", format_number(summary["container_load"]), subtext="Total Muat", variant="blue")
         with k6:
@@ -493,12 +493,12 @@ with st.container(border=True):
         with t1:
             render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Basis Perhitungan", variant="blue")
         with t2:
-            render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), badge="Optimum", variant="emerald")
+            render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), variant="emerald")
         with t3:
-            render_kpi_card("Bukan Twinlift", format_number(summary["total_non_twinlift"]), badge="Reguler", variant="slate")
+            render_kpi_card("Bukan Twinlift", format_number(summary["total_non_twinlift"]), variant="slate")
         with t4:
             pct_twin_val = summary["pct_twinlift_of_total"] * 100
-            render_kpi_card("% Twinlift", f"{pct_twin_val:.1f}%", badge="Rasio Event", variant="blue")
+            render_kpi_card("% Twinlift", f"{pct_twin_val:.1f}%", variant="blue")
 
         tc1, tc2 = st.columns(2)
         with tc1:
@@ -587,15 +587,15 @@ with st.container(border=True):
             with v1:
                 render_kpi_card("Total Aktivitas", format_number(total_rec), subtext="Baris Data", variant="blue")
             with v2:
-                render_kpi_card("Dual Cycle", format_number(dual_rec), badge="Event", variant="emerald")
+                render_kpi_card("Dual Cycle", format_number(dual_rec), variant="emerald")
             with v3:
                 pct_dual_v = (dual_rec / total_rec * 100) if total_rec else 0
-                render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", badge="Rasio", variant="blue")
+                render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", variant="blue")
             with v4:
-                render_kpi_card("Twinlift", format_number(twinlift_rec), badge="Event", variant="emerald")
+                render_kpi_card("Twinlift", format_number(twinlift_rec), variant="emerald")
             with v5:
                 pct_twin_v = (twinlift_rec / total_rec * 100) if total_rec else 0
-                render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", badge="Rasio", variant="blue")
+                render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", variant="blue")
 
             vc1, vc2 = st.columns(2)
             with vc1:
