@@ -707,7 +707,3 @@ with st.container(border=True):
                         st.rerun()
                     except Exception as err:
                         st.error(f"Gagal membuat file Excel: {err}.")
-
-        st.caption(
-            "💡 **Catatan:** Dashboard ini dikhususkan menggunakan format **.xlsx** untuk menjamin akurasi timestamp dan kalkulasi metrik."
-        )
