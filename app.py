@@ -102,13 +102,13 @@ with st.container(border=True):
     with u_col2:
         uploaded = st.file_uploader(
             "Pilih file data aktivitas kontainer",
-            type=["xlsx", "xls", "csv"],
+            type=["xlsx"],
             accept_multiple_files=False,
             label_visibility="collapsed",
             key="file_uploader_widget",
         )
         if uploaded is None:
-            render_html('<div class="step1-upload-hint">(.xlsx, .xls, .csv &lt;200 MB)</div>')
+            render_html('<div class="step1-upload-hint">(Khusus format .xlsx &lt;200 MB)</div>')
 
 # Alur Kerja Bertahap: Jika belum ada file diunggah, Langkah 2 & 3 tidak muncul
 if uploaded is None:
@@ -152,7 +152,7 @@ if "_cached_sheets" not in st.session_state:
         loading_placeholder.empty()
         st.error(
             "Gagal membaca file yang diupload. Pastikan file tidak corrupt dan "
-            "formatnya benar-benar .xlsx / .xls / .csv."
+            "formatnya benar-benar file Excel (.xlsx)."
         )
         with st.expander("Detail error (untuk dilaporkan)"):
             st.exception(e)
@@ -696,17 +696,9 @@ with st.container(border=True):
 
         dcol1, dcol2 = st.columns(2)
         with dcol1:
-            st.download_button(
-                "Download CSV (Dataset Lengkap)",
-                data=st.session_state["_csv_bytes"],
-                file_name="Hasil_Analisis_Dual_Cycle.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-        with dcol2:
             if excel_ready:
                 st.download_button(
-                    "Download Excel (Dataset Lengkap)",
+                    "Download Excel (.xlsx)",
                     data=st.session_state["_excel_bytes"],
                     file_name="Hasil_Analisis_Dual_Cycle.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -720,13 +712,16 @@ with st.container(border=True):
                             st.session_state["_excel_sig"] = hasil_sig
                             st.rerun()
                         except Exception as err:
-                            st.error(
-                                f"Gagal membuat file Excel: {err}. "
-                                "Karena dataset berukuran besar, disarankan mengunduh format CSV di samping."
-                            )
-
-        if len(out_df) > 30_000:
-            st.caption(
-                "💡 **Tips:** Untuk file dengan puluhan ribu baris, format **CSV** sangat disarankan "
-                "karena proses unduh instan dan dapat langsung dibuka di Microsoft Excel atau diimpor ke aplikasi BI."
+                            st.error(f"Gagal membuat file Excel: {err}.")
+        with dcol2:
+            st.download_button(
+                "Download CSV (Alternatif Raw Data)",
+                data=st.session_state["_csv_bytes"],
+                file_name="Hasil_Analisis_Dual_Cycle.csv",
+                mime="text/csv",
+                use_container_width=True,
             )
+
+        st.caption(
+            "💡 **Catatan:** Dashboard ini dikhususkan menggunakan format **.xlsx** untuk menjamin akurasi timestamp dan kalkulasi metrik."
+        )

@@ -46,7 +46,7 @@ graph LR
 
 ### **Langkah 1: Upload File Data Operasional**
 1. Pada kartu **Langkah 1**, klik tombol **"Upload File"**.
-2. Unggah file log aktivitas kontainer dari sistem TOS dermaga atau VBS (format `.xlsx`, `.xls`, atau `.csv` dengan ukuran hingga 200 MB).
+2. Unggah file log aktivitas kontainer dari sistem TOS dermaga atau VBS (khusus format `.xlsx` dengan ukuran hingga 200 MB).
 3. Sistem secara otomatis membaca seluruh sheet, memvalidasi keberadaan kolom wajib, dan menampilkan nama file terpilih.
 
 ### **Langkah 2: Parameter Ambang Batas & Kriteria Analisis**
