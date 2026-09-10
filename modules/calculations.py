@@ -16,6 +16,7 @@ import re
 import numpy as np
 import pandas as pd
 import streamlit as st
+from modules.ui import format_number
 
 # ================================================================
 # KONSTANTA DEFAULT (Kompak & Terkalibrasi dengan Macro VBA)
@@ -422,7 +423,7 @@ def proses_analisis_lengkap(
         return None, None, None
 
     if progress_callback:
-        progress_callback(32, "Menganalisis siklus truk (Combo)...", f"{len(df):,} baris kontainer")
+        progress_callback(32, "Menganalisis siklus truk (Combo)...", f"{format_number(len(df))} baris kontainer")
 
     df_combo = layer1_combo(df, ambang_combo, size_eligible)
 
@@ -439,7 +440,7 @@ def proses_analisis_lengkap(
     events["TWINLIFT_GAP_MENIT"] = events["GROUP_ID"].map(twinlift_gap_map)
 
     if progress_callback:
-        progress_callback(80, "Menghitung rasio Dual Cycle...", f"{len(events):,} event terdeteksi")
+        progress_callback(80, "Menghitung rasio Dual Cycle...", f"{format_number(len(events))} event terdeteksi")
 
     events = layer2_dual(events, ambang_dual)
     events, event_id_map = beri_event_id(events, df_combo)

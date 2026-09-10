@@ -161,8 +161,34 @@ def render_artistic_hero(hero_path: Path | None, icon_path: Path | None, brand_p
     )
 
 
-def render_kpi_card(label: str, value: str, subtext: str = None, badge: str = None, variant: str = "blue"):
+def format_number(val: int | float | str | None) -> str:
+    """
+    Memformat angka bulat dengan pemisah ribuan titik (format Indonesia/ID),
+    contoh: 326070 -> '326.070'.
+    """
+    if val is None:
+        return "0"
+    if isinstance(val, (int, float)):
+        val_int = int(round(val))
+        return f"{val_int:,}".replace(",", ".")
+    s = str(val).strip()
+    import re
+    if re.match(r"^-?\d{1,3}(,\d{3})+$", s):
+        return s.replace(",", ".")
+    if s.lstrip("-").isdigit():
+        return f"{int(s):,}".replace(",", ".")
+    return s
+
+
+def render_kpi_card(
+    label: str,
+    value: str | int | float,
+    subtext: str = None,
+    badge: str = None,
+    variant: str = "blue",
+):
     """Merender kartu KPI glassmorphism menggunakan template templates/kpi_card.html."""
+    formatted_value = format_number(value)
     subtext_html = f'<div class="kpi-subtext">{subtext}</div>' if subtext else ""
     badge_variant = f"badge-{variant}" if variant in ["emerald", "coral", "purple", "amber", "slate", "blue"] else ""
     badge_html = f'<span class="kpi-badge {badge_variant}">{badge}</span>' if badge else ""
@@ -170,7 +196,7 @@ def render_kpi_card(label: str, value: str, subtext: str = None, badge: str = No
     render_template(
         "kpi_card.html",
         label=label,
-        value=value,
+        value=formatted_value,
         subtext_html=subtext_html,
         badge_html=badge_html,
         variant=variant,

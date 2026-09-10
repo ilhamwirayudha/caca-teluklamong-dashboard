@@ -29,6 +29,7 @@ from modules.charts import apply_glass_theme
 from modules.data_loader import baca_file, build_excel_data_only
 from modules.ui import (
     find_asset_file,
+    format_number,
     inject_css,
     inject_transition_script,
     render_artistic_hero,
@@ -364,18 +365,18 @@ with st.container(border=True):
     with tab_dual:
         k1, k2, k3, k4, k5, k6 = st.columns(6)
         with k1:
-            render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Ritase Truk", variant="blue")
+            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Ritase Truk", variant="blue")
         with k2:
-            render_kpi_card("Dual Cycle", f"{summary['total_dual']:,}", badge="Optimal", variant="emerald")
+            render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), badge="Optimal", variant="emerald")
         with k3:
-            render_kpi_card("Non Dual", f"{summary['total_single']:,}", badge="Single", variant="slate")
+            render_kpi_card("Non Dual", format_number(summary["total_single"]), badge="Single", variant="slate")
         with k4:
             pct_dual_val = summary["pct_dual"] * 100
             render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", badge="Efisiensi", variant="blue")
         with k5:
-            render_kpi_card("Container LOAD", f"{summary['container_load']:,}", subtext="Total Muat", variant="blue")
+            render_kpi_card("Container LOAD", format_number(summary["container_load"]), subtext="Total Muat", variant="blue")
         with k6:
-            render_kpi_card("Container DISC", f"{summary['container_disc']:,}", subtext="Total Bongkar", variant="slate")
+            render_kpi_card("Container DISC", format_number(summary["container_disc"]), subtext="Total Bongkar", variant="slate")
 
         cc1, cc2 = st.columns(2)
         with cc1:
@@ -416,6 +417,7 @@ with st.container(border=True):
                     ],
                 }
             )
+            container_df["Jumlah_Tampil"] = container_df["Jumlah"].apply(format_number)
             fig_bar = px.bar(
                 container_df,
                 x="Container",
@@ -424,7 +426,7 @@ with st.container(border=True):
                 barmode="group",
                 title="Rincian Container x Status (Event)",
                 color_discrete_map={"Dual Cycle": "#0284C7", "Non Dual": "#94A3B8"},
-                text="Jumlah",
+                text="Jumlah_Tampil",
             )
             fig_bar.update_traces(marker=dict(line=dict(color="#ffffff", width=1)))
             apply_glass_theme(fig_bar)
@@ -489,11 +491,11 @@ with st.container(border=True):
 
         t1, t2, t3, t4 = st.columns(4)
         with t1:
-            render_kpi_card("Total Event", f"{summary['total_event']:,}", subtext="Basis Perhitungan", variant="blue")
+            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Basis Perhitungan", variant="blue")
         with t2:
-            render_kpi_card("Twinlift", f"{summary['total_twinlift']:,}", badge="Optimum", variant="emerald")
+            render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), badge="Optimum", variant="emerald")
         with t3:
-            render_kpi_card("Bukan Twinlift", f"{summary['total_non_twinlift']:,}", badge="Reguler", variant="slate")
+            render_kpi_card("Bukan Twinlift", format_number(summary["total_non_twinlift"]), badge="Reguler", variant="slate")
         with t4:
             pct_twin_val = summary["pct_twinlift_of_total"] * 100
             render_kpi_card("% Twinlift", f"{pct_twin_val:.1f}%", badge="Rasio Event", variant="blue")
@@ -583,14 +585,14 @@ with st.container(border=True):
 
             v1, v2, v3, v4, v5 = st.columns(5)
             with v1:
-                render_kpi_card("Total Aktivitas", f"{total_rec:,}", subtext="Baris Data", variant="blue")
+                render_kpi_card("Total Aktivitas", format_number(total_rec), subtext="Baris Data", variant="blue")
             with v2:
-                render_kpi_card("Dual Cycle", f"{dual_rec:,}", badge="Event", variant="emerald")
+                render_kpi_card("Dual Cycle", format_number(dual_rec), badge="Event", variant="emerald")
             with v3:
                 pct_dual_v = (dual_rec / total_rec * 100) if total_rec else 0
                 render_kpi_card("% Dual Cycle", f"{pct_dual_v:.1f}%", badge="Rasio", variant="blue")
             with v4:
-                render_kpi_card("Twinlift", f"{twinlift_rec:,}", badge="Event", variant="emerald")
+                render_kpi_card("Twinlift", format_number(twinlift_rec), badge="Event", variant="emerald")
             with v5:
                 pct_twin_v = (twinlift_rec / total_rec * 100) if total_rec else 0
                 render_kpi_card("% Twinlift", f"{pct_twin_v:.1f}%", badge="Rasio", variant="blue")
@@ -651,6 +653,7 @@ with st.container(border=True):
             vcont_df = pd.DataFrame(
                 {"Container": ["Combo", "Single"], "Jumlah": [combo_rec, single_rec]}
             )
+            vcont_df["Jumlah_Tampil"] = vcont_df["Jumlah"].apply(format_number)
             fig_v3 = px.bar(
                 vcont_df,
                 x="Container",
@@ -658,7 +661,7 @@ with st.container(border=True):
                 title=f"Combo vs Single — {selected_vessel}",
                 color="Container",
                 color_discrete_map={"Combo": "#0EA5E9", "Single": "#64748B"},
-                text="Jumlah",
+                text="Jumlah_Tampil",
             )
             apply_glass_theme(fig_v3)
             st.plotly_chart(fig_v3, width="stretch")
@@ -670,7 +673,7 @@ with st.container(border=True):
         st.dataframe(out_df.head(1000), use_container_width=True, height=400)
         if len(out_df) > 1000:
             st.caption(
-                f"Menampilkan 1.000 baris pertama dari total {len(out_df):,} baris. "
+                f"Menampilkan 1.000 baris pertama dari total {format_number(len(out_df))} baris. "
                 "Gunakan tombol di bawah untuk mengunduh dataset lengkap."
             )
 

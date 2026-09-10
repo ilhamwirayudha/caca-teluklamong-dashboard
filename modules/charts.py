@@ -21,6 +21,7 @@ def apply_glass_theme(fig, title: str = None, *args, **kwargs):
         default_margin.update(margin)
 
     fig.update_layout(
+        separators=",.",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="Plus Jakarta Sans, -apple-system, sans-serif", color="#e2e8f0"),

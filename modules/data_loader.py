@@ -12,6 +12,7 @@ import openpyxl
 from openpyxl.styles import Font
 import pandas as pd
 import streamlit as st
+from modules.ui import format_number
 
 
 def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[str, pd.DataFrame]:
@@ -48,8 +49,8 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
                     if progress_callback:
                         progress_callback(
                             pct,
-                            f"Membaca data CSV ({total_rows:,} baris)...",
-                            f"{total_rows:,} baris dimuat ke memori",
+                            f"Membaca data CSV ({format_number(total_rows)} baris)...",
+                            f"{format_number(total_rows)} baris dimuat ke memori",
                         )
 
             df = pd.concat(chunks, ignore_index=True)
@@ -62,7 +63,7 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
             progress_callback(
                 100,
                 "File CSV operasional siap dianalisis!",
-                f"{len(df):,} baris data berhasil dimuat",
+                f"{format_number(len(df))} baris data berhasil dimuat",
             )
         return {"__csv__": df}
 
@@ -88,7 +89,7 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
             sheet_weight = 88.0 / num_sheets
 
             if progress_callback:
-                target_info = f"{max_row:,} total baris" if max_row else "memulai baris..."
+                target_info = f"{format_number(max_row)} total baris" if max_row else "memulai baris..."
                 progress_callback(
                     base_pct,
                     f"Mengekstrak sheet '{sname}' ({s_idx + 1}/{num_sheets})...",
@@ -127,7 +128,7 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
                         last_update = now
                         last_pct = current_pct
                         if progress_callback:
-                            row_info = f"Baris {r_idx + 1:,}" + (f" / {max_row:,}" if max_row else "")
+                            row_info = f"Baris {format_number(r_idx + 1)}" + (f" / {format_number(max_row)}" if max_row else "")
                             progress_callback(
                                 current_pct,
                                 f"Mengekstrak '{sname}'...",
@@ -144,7 +145,7 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
             progress_callback(
                 100,
                 "Data siap dianalisis!",
-                f"{total_all_rows:,} baris siap",
+                f"{format_number(total_all_rows)} baris siap",
             )
         return sheets_dict
 
@@ -166,7 +167,7 @@ def baca_file(file_bytes: bytes, filename: str, progress_callback=None) -> dict[
 
     if progress_callback:
         total_rows = sum(len(d) for d in sheets_dict.values())
-        progress_callback(100, "File Excel siap dianalisis!", f"{total_rows:,} baris berhasil dimuat")
+        progress_callback(100, "File Excel siap dianalisis!", f"{format_number(total_rows)} baris berhasil dimuat")
     return sheets_dict
 
 
