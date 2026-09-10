@@ -87,11 +87,6 @@ def siapkan_data(raw: pd.DataFrame, col_map: dict, size_eligible: int) -> pd.Dat
 
     ves_kosong = df["VES_ID"].isna()
     if ves_kosong.any():
-        st.warning(
-            f"{int(ves_kosong.sum())} baris punya VES_ID kosong. Baris ini tetap "
-            f"diproses di analisis Dual Cycle/Twinlift (tidak dibuang), tapi di tab "
-            f"'Per Vessel' dikelompokkan terpisah sbg \"(VES_ID Kosong)\"."
-        )
         df.loc[ves_kosong, "VES_ID"] = "(VES_ID Kosong)"
 
     df = df.reset_index(drop=True)
