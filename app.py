@@ -365,7 +365,7 @@ with st.container(border=True):
     with tab_dual:
         k1, k2, k3, k4, k5, k6 = st.columns(6)
         with k1:
-            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Ritase Truk", variant="blue")
+            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Ritase Truk", variant="purple")
         with k2:
             render_kpi_card("Dual Cycle", format_number(summary["total_dual"]), variant="blue")
         with k3:
@@ -374,9 +374,9 @@ with st.container(border=True):
             pct_dual_val = summary["pct_dual"] * 100
             render_kpi_card("% Dual Cycle", f"{pct_dual_val:.1f}%", variant="blue")
         with k5:
-            render_kpi_card("Container LOAD", format_number(summary["container_load"]), subtext="Total Muat", variant="blue")
+            render_kpi_card("Container LOAD", format_number(summary["container_load"]), subtext="Total Muat", variant="amber")
         with k6:
-            render_kpi_card("Container DISC", format_number(summary["container_disc"]), subtext="Total Bongkar", variant="slate")
+            render_kpi_card("Container DISC", format_number(summary["container_disc"]), subtext="Total Bongkar", variant="teal")
 
         cc1, cc2 = st.columns(2)
         with cc1:
@@ -491,7 +491,7 @@ with st.container(border=True):
 
         t1, t2, t3, t4 = st.columns(4)
         with t1:
-            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Basis Perhitungan", variant="blue")
+            render_kpi_card("Total Event", format_number(summary["total_event"]), subtext="Basis Perhitungan", variant="purple")
         with t2:
             render_kpi_card("Twinlift", format_number(summary["total_twinlift"]), variant="blue")
         with t3:
@@ -585,7 +585,7 @@ with st.container(border=True):
 
             v1, v2, v3, v4, v5 = st.columns(5)
             with v1:
-                render_kpi_card("Total Aktivitas", format_number(total_rec), subtext="Baris Data", variant="blue")
+                render_kpi_card("Total Aktivitas", format_number(total_rec), subtext="Baris Data", variant="purple")
             with v2:
                 render_kpi_card("Dual Cycle", format_number(dual_rec), variant="blue")
             with v3:

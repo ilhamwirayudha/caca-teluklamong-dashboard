@@ -474,17 +474,41 @@
             border-radius: 16px 16px 0 0;
         }
 
-        /* Editorial Variants: Restrained, Muted, Boardroom-Ready */
-        .kpi-card.variant-emerald::before {
-            background: linear-gradient(90deg, #059669, #10b981);
+        /* Editorial Variants: Konsisten Semantik Visual Data */
+        /* 1. Purple/Indigo: Total Volume / Total Event / Total Aktivitas */
+        .kpi-card.variant-purple::before,
+        .kpi-card.variant-indigo::before {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
         }
-        .kpi-card.variant-slate::before,
-        .kpi-card.variant-coral::before {
+        .kpi-card.variant-purple:hover,
+        .kpi-card.variant-indigo:hover {
+            box-shadow: 0 16px 36px -4px rgba(99, 102, 241, 0.35) !important;
+            border-color: rgba(129, 140, 248, 0.45) !important;
+        }
+
+        /* 2. Slate: Non Dual / Bukan Twinlift (Abu-abu, identik dengan chart) */
+        .kpi-card.variant-slate::before {
             background: linear-gradient(90deg, #475569, #94a3b8);
         }
-        .kpi-card.variant-purple::before,
+
+        /* 3. Amber: Container LOAD (Muat) */
         .kpi-card.variant-amber::before {
-            background: linear-gradient(90deg, #0284c7, #38bdf8);
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+        }
+        .kpi-card.variant-amber:hover {
+            box-shadow: 0 16px 36px -4px rgba(245, 158, 11, 0.3) !important;
+            border-color: rgba(251, 191, 36, 0.45) !important;
+        }
+
+        /* 4. Teal: Container DISC (Bongkar) */
+        .kpi-card.variant-teal::before,
+        .kpi-card.variant-emerald::before {
+            background: linear-gradient(90deg, #0d9488, #14b8a6);
+        }
+        .kpi-card.variant-teal:hover,
+        .kpi-card.variant-emerald:hover {
+            box-shadow: 0 16px 36px -4px rgba(20, 184, 166, 0.3) !important;
+            border-color: rgba(45, 212, 191, 0.45) !important;
         }
 
         .kpi-header {
